@@ -5,14 +5,15 @@
     <head>
         <title>Time</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="/site/sakura.css">
+        <link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+        <script src="./css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
     </head>
 
     <body>
         <p><a href="/site">&lt; Voltar para página inicial</a></p>
         <h1>Adicionar Time</h1>
 
-        <table>    
+        <table>
             <tr>
                 <td>Nome:</td>
                 <td><input type="text" id="txtNome"></td>
@@ -29,46 +30,51 @@
                 <td>Estado:</td>
                 <td><input type="text" id="txtEstado"></td>
             </tr>
-            <tr><td></td><td><input type="button" onclick="criarTime()" value="Criar"></td></tr>
+            <tr>
+                <td></td>
+                <td><input type="button" onclick="criarTime()" value="Criar"></td>
+            </tr>
         </table>
         <p style="font-weight:bold" id="mensagem"></p>
-        
-    <script>
-        const textoNome = document.querySelector('#txtNome');
-        const textoAnodeFundacao = document.querySelector('#txtAnodeFundacao');
-        const textoCidade = document.querySelector('#txtCidade');
-        const textoEstado = document.querySelector('#txtEstado');
-        const paragrafoMensagem = document.querySelector('#mensagem');
-        
-        function mostrarMensagem(timeCadastrado) {
-            textoNome.value = '';
-            textoAnodeFundacao.value = '';
-            textoCidade.value = '';
-            textoEstado.value = '';
-            paragrafoMensagem.innerHTML = 'Time foi criado com id ' + timeCadastrado.id;
-        }
 
-        async function criarTime() {
-            const URL = `/api/times`;
-            const dadosTime = {
-                                       'nome': textoNome.value,
-                                       'anoFundacao': textoAnodeFundacao.value,
-                                       'cidade': textoCidade.value,
-                                       'estado': textoEstado.value
-                                   };
-            const postRequest =    {
-                                        method:'POST',
-                                        body: JSON.stringify(dadosTime),
-                                        headers: { 'Content-type': 'application/json;charset=UTF-8' }
-                                   };
-            try {
-                fetch(URL, postRequest).then(resposta => resposta.json()).then(jsonResponse => mostrarMensagem(jsonResponse));
-            } catch (e) {
-                corpoTabela.innerHTML = e;
+        <script>
+            const textoNome = document.querySelector('#txtNome');
+            const textoAnodeFundacao = document.querySelector('#txtAnodeFundacao');
+            const textoCidade = document.querySelector('#txtCidade');
+            const textoEstado = document.querySelector('#txtEstado');
+            const paragrafoMensagem = document.querySelector('#mensagem');
+
+            function mostrarMensagem(timeCadastrado) {
+                textoNome.value = '';
+                textoAnodeFundacao.value = '';
+                textoCidade.value = '';
+                textoEstado.value = '';
+                paragrafoMensagem.innerHTML = 'Time foi criado com id ' + timeCadastrado.id;
             }
-        }
 
-    </script>
+            async function criarTime() {
+                const URL = `/api/times`;
+                const dadosTime = {
+                    'nome': textoNome.value,
+                    'anoFundacao': textoAnodeFundacao.value,
+                    'cidade': textoCidade.value,
+                    'estado': textoEstado.value
+                };
+                const postRequest = {
+                    method: 'POST',
+                    body: JSON.stringify(dadosTime),
+                    headers: {
+                        'Content-type': 'application/json;charset=UTF-8'
+                    }
+                };
+                try {
+                    fetch(URL, postRequest).then(resposta => resposta.json()).then(jsonResponse => mostrarMensagem(
+                        jsonResponse));
+                } catch (e) {
+                    corpoTabela.innerHTML = e;
+                }
+            }
+        </script>
     </body>
 
     </html>

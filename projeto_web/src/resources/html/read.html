@@ -5,14 +5,15 @@
     <head>
         <title>Professossres (read)</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="/site/sakura.css">
+        <link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+        <script src="./css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
     </head>
 
     <body>
         <p><a href="/site">&lt; Voltar para página inicial</a></p>
         <h1>Professores</h1>
         <p style="font-weight:bold" id="contador"></p>
-        <table>    
+        <table>
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
@@ -22,34 +23,35 @@
             </tbody>
         </table>
 
-    <script>
-        const corpoTabela = document.querySelector('#professores');
-        const contadorParagraph = document.querySelector('#contador');
-        
-        function preencherTabela(professores) {
-            var linhasTabela = '';
-            var n = professores.length;
-            for (var i = 0; i < n; i++) {
-                var professor = professores[i];
-                linhasTabela += '<tr><td>' + professor.id     + '</td>' + 
-                                    '<td>' + professor.nome   + '</td>' +
-                                    '<td>' + professor.matricula + '</td></tr>\n';
+        <script>
+            const corpoTabela = document.querySelector('#professores');
+            const contadorParagraph = document.querySelector('#contador');
+
+            function preencherTabela(professores) {
+                var linhasTabela = '';
+                var n = professores.length;
+                for (var i = 0; i < n; i++) {
+                    var professor = professores[i];
+                    linhasTabela += '<tr><td>' + professor.id + '</td>' +
+                        '<td>' + professor.nome + '</td>' +
+                        '<td>' + professor.matricula + '</td></tr>\n';
+                }
+                corpoTabela.innerHTML = linhasTabela;
+                contadorParagraph.innerHTML = n + ' ' + (n == 1 ? 'professor' : 'professores');
             }
-            corpoTabela.innerHTML = linhasTabela;
-            contadorParagraph.innerHTML = n + ' ' + (n==1?'professor':'professores');
-        }
 
-        async function listarTodosProfessores() {
-          const URL = `/api/professores`;
-          try {
-            fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
-          } catch (e) {
-            corpoTabela.innerHTML = e;
-          }
-        }
+            async function listarTodosProfessores() {
+                const URL = `/api/professores`;
+                try {
+                    fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(
+                    jsonResponse));
+                } catch (e) {
+                    corpoTabela.innerHTML = e;
+                }
+            }
 
-        listarTodosProfessores();
-    </script>
+            listarTodosProfessores();
+        </script>
     </body>
 
     </html>
