@@ -4,6 +4,7 @@ import ps2.dao.DaoException;
 import ps2.dao.EmpresaDao;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import io.dropwizard.jersey.*;
 import io.dropwizard.jersey.params.*;
 import java.util.*;
 import ps2.entidade.Empresa;
@@ -24,8 +25,8 @@ public class EmpresaResource {
     public Empresa create(Empresa e) {
         Empresa resp;
         try {
-            long id = dao.create(e);
-            e.setId(id);
+            long id_emp = dao.create(e);
+            e.setId(id_emp);
             resp = e;
         } catch (DaoException ex) {
             ex.printStackTrace();
@@ -47,11 +48,11 @@ public class EmpresaResource {
     }
 
     @PUT
-    @Path("{id}")
-    public Empresa update(@PathParam("id") LongParam id, Empresa e) {
+    @Path("{id_emp}")
+    public Empresa update(@PathParam("id_emp") LongParam id_emp, Empresa e) {
         Empresa resp;
         try {
-            e.setId(id.get());
+            e.setId(id_emp.get());
             dao.update(e);
             resp = e;
         } catch (DaoException ex) {
@@ -62,26 +63,26 @@ public class EmpresaResource {
     }
 
     @DELETE
-    @Path("{id}")
-    public Response delete(@PathParam("id") LongParam id) {
+    @Path("{id_emp}")
+    public Response delete(@PathParam("id_emp") LongParam id_emp) {
         Empresa e;
         try {
-            e = dao.readById(id.get());
+            e = dao.readById(id_emp.get());
         } catch (DaoException ex) {
             ex.printStackTrace();
             throw new WebApplicationException("Erro ao buscar campenato com id="
-                    + id.get(), 500);
+                    + id_emp.get(), 500);
         }
         if (e != null) {
             try {
-                dao.delete(id.get());
+                dao.delete(id_emp.get());
             } catch (DaoException ex) {
                 ex.printStackTrace();
                 throw new WebApplicationException("Erro ao tentar apagar Empresa com id="
-                        + id.get(), 500);
+                        + id_emp.get(), 500);
             }
         } else {
-            throw new WebApplicationException("Empresa com id=" + id.get()
+            throw new WebApplicationException("Empresa com id=" + id_emp.get()
                     + " não encontrado!", 404);
         }
         return Response.ok().build();

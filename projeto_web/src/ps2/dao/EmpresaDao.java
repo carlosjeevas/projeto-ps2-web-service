@@ -10,9 +10,9 @@ public class EmpresaDao {
 
     private final static String sqlC = "INSERT INTO empresas (nome) VALUES (?)";
     private final static String sqlR = "SELECT * FROM empresas";
-    private final static String sqlU = "UPDATE empresas SET nome=? WHERE id=?";
-    private final static String sqlD = "DELETE FROM empresas WHERE id=?";
-    private final static String sqlRById = "SELECT * FROM empresas WHERE id=?";
+    private final static String sqlU = "UPDATE empresas SET nome=? WHERE id_emp=?";
+    private final static String sqlD = "DELETE FROM empresas WHERE id_emp=?";
+    private final static String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";
     private PreparedStatement stmC;
     private PreparedStatement stmR;
     private PreparedStatement stmU;
@@ -54,7 +54,7 @@ public class EmpresaDao {
         try {
             ResultSet rs = stmR.executeQuery();
             while (rs.next()) {
-                long id_emp = rs.getLong("id");
+                long id_emp = rs.getLong("id_emp");
                 String nome = rs.getString("nome");
                 Empresa e = new Empresa(id_emp, nome);
                 empresas.add(e);

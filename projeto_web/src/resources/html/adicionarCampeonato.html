@@ -13,42 +13,47 @@
         <p><a href="/site">&lt; Voltar para página inicial</a></p>
         <h1>Adicionar Campeonato</h1>
 
-        <table>    
+        <table>
             <tr>
                 <td>Nome:</td>
                 <td><input type="text" id="txtNome"></td>
             </tr>
-            <tr><td></td><td><input type="button" onclick="criarCampeonato()" value="Criar"></td></tr>
+            <tr>
+                <td></td>
+                <td><input type="button" onclick="criarCampeonato()" value="Criar"></td>
+            </tr>
         </table>
         <p style="font-weight:bold" id="mensagem"></p>
-        
-    <script>
-        const textoNome = document.querySelector('#txtNome');
-        const paragrafoMensagem = document.querySelector('#mensagem');
-        
-        function mostrarMensagem(campeonatoCadastrado) {
-            textoNome.value = '';
-            paragrafoMensagem.innerHTML = 'Campeonato foi criado com id ' + campeonatoCadastrado.id;
-        }
 
-        async function criarCampeonato() {
-            const URL = `/api/campeonatos`;
-            const dadosCampeonato = {
-                                       'nome': textoNome.value
-                                   };
-            const postRequest =    {
-                                        method:'POST',
-                                        body: JSON.stringify(dadosCampeonato),
-                                        headers: { 'Content-type': 'application/json;charset=UTF-8' }
-                                   };
-            try {
-                fetch(URL, postRequest).then(resposta => resposta.json()).then(jsonResponse => mostrarMensagem(jsonResponse));
-            } catch (e) {
-                corpoTabela.innerHTML = e;
+        <script>
+            const textoNome = document.querySelector('#txtNome');
+            const paragrafoMensagem = document.querySelector('#mensagem');
+
+            function mostrarMensagem(campeonatoCadastrado) {
+                textoNome.value = '';
+                paragrafoMensagem.innerHTML = 'Campeonato foi criado com id ' + campeonatoCadastrado.id;
             }
-        }
 
-    </script>
+            async function criarCampeonato() {
+                const URL = `/api/campeonatos`;
+                const dadosCampeonato = {
+                    'nome': textoNome.value
+                };
+                const postRequest = {
+                    method: 'POST',
+                    body: JSON.stringify(dadosCampeonato),
+                    headers: {
+                        'Content-type': 'application/json;charset=UTF-8'
+                    }
+                };
+                try {
+                    fetch(URL, postRequest).then(resposta => resposta.json()).then(jsonResponse => mostrarMensagem(
+                        jsonResponse));
+                } catch (e) {
+                    corpoTabela.innerHTML = e;
+                }
+            }
+        </script>
     </body>
 
     </html>
