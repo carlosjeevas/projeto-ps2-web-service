@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Times (update)</title>
+		<meta charset="UTF-8">
+                <link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+                <script src="css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+                <a href="/site/adicionarTime.html"><button>+ Novo</button></a> 
+                
+                <div class="modal-overlay" id="modal-overlay"></div>
+
+<div class="modal" id="modal">
+  <button class="close-button" id="close-button">Obvious Close Button</button>
+  <div class="modal-guts">
+    <h1>Atualizar professor</h1>
+
+        <table>    
+            <tr>
+            </tr>
+                <td>ID:</td>
+                <td id="idTime"></td>
+            <tr>
+                <td>Nome:</td>
+                <td><input type="text" id="txtNome"></td>
+            </tr>
+            <tr>
+                <td>Ano de Fundação:</td>
+                <td><input type="text" id="txtAnoFundacao"></td> 
+            </tr>
+            <tr>
+                <td>Cidade:</td>
+                <td><input type="text" id="txtAnoCidade"></td> 
+            </tr>
+            <tr>
+                <td>Estado:</td>
+                <td><input type="text" id="txtAnoEstado"></td> 
+            </tr>
+            <tr><td></td><td><input type="button" onclick="atualizarTime()" value="Salvar"></td></tr>
+        </table>
+  </div>
+</div>
+
+<button id="open-button" class="open-button">Open Button</button>
+                
+                
+                
+                
+                
+                
+                
+                
+		<p><a href="/site">&lt; Voltar para página inicial</a></p>
+                <h1> Times</h1>
+		<p style="font-weight:bold" id="mensagem"></p>
+		<table>
+			<tr>
+				<th>ID</th>
+                                <td id ="idTime"></td>
+				<th>Nome</th>
+                                <td id="txtNome"></td>
+                                <th>Ano de Fundação</th>
+                                <td id="txtAnoFundacao"></td>
+                                <th>Cidade</th>
+                                <td id="txtCidade"></td>
+                                <th>Estado</th>
+                                <td id="txtEstado"></td>
+				<th>Ações</th>
+			</tr>
+				<tbody id="times">
+			</tbody>
+		</table>
+		<script>
+			const corpoTabela = document.querySelector('#times');
+const paragrafoMensagem = document.querySelector('#mensagem');
+const textoNome = document.querySelector('#txtNome');
+const textoAnoFundacao = document.querySelector('#txtAnoFundacao');
+const textoCidade = document.querySelector('#txtCidade');
+const textoEstado = document.querySelector('#txtEstado');
+const celulaID = document.querySelector('#idTime');
+
+var times = [];
+
+function inicializar() {
+	celulaID.innerHTML = '';
+	textoNome.value = '';
+        textoAnoFundacao.value = '';
+        textoCidade.value = '';
+        textoEstado.value = '';
+	listarTodosTimes();
+}
+
+function selecionarTime(id, nome, anoFundacao, cidade, estado) {
+            celulaID.innerHTML = id;
+            textoNome.value = nome;
+            textoAnoFundacao.value = anoFundacao;
+            textoCidade.value = cidade;
+            textoEstado.value = estado;
+        }
+
+
+
+
+
+
+function preencherTabela(tim) {
+	times = tim;
+	var linhasTabela = '';
+	var n = times.length;
+	for (var i = 0; i < n; i++) {
+		var time = times[i];
+		linhasTabela +=
+		`<tr><td>`
+		+ time.id + '</a></td>' +
+		'<td>' + time.nome + '</td>' +
+                '<td>' + time.anoFundacao + '</td>' +
+                '<td>' + time.cidade + '</td>' +
+                '<td>' + time.estado + '</td>' +
+		`<td><button class="open-modal" onclick="open">Visualizar os Campeonatos</button></td>` +
+		`<td><button id="open-button" class="open-button" onclick="selecionarTime('${time.id}','${time.nome}','${time.anoFundacao}','${time.cidade}','${time.estado}')">Editar</button></td>` +
+		`<td><button onclick="apagarTime(${time.id})">Excluir</button></td></tr>\n`;
+	}
+	corpoTabela.innerHTML = linhasTabela;
+}
+
+async function listarTodosTimes() {
+	const URL = `/api/times`;
+          try {
+            fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
+          } catch (e) {
+            corpoTabela.innerHTML = e;
+          }
+        }
+inicializar();
+
+
+       async function apagarTime(id) {
+            celulaID.innerHTML = id;
+            const ID = celulaID.innerHTML;
+            const URL = `/api/times/${ID}`;
+            const deleteRequest =    {
+                                        method:'DELETE'
+                                     };
+            try {
+                fetch(URL, deleteRequest).then(resposta => inicializar());
+            } catch (e) {
+                corpoTabela.innerHTML = e;
+            }
+        }
+        
+        async function atualizarTime() {
+            if (celulaID.innerHTML == '') return;
+            const ID = celulaID.innerHTML;
+            const URL = `/api/times/${ID}`;
+            const dadosProfessor = {
+                                       'id': ID,
+                                       'nome': textoNome.value,
+                                       'matricula': textoMatricula.value
+                                   };
+            const putRequest =    {
+                                        method:'PUT',
+                                        body: JSON.stringify(dadosTime),
+                                        headers: { 'Content-type': 'application/json;charset=UTF-8' }
+                                   };
+            try {
+                fetch(URL, putRequest).then(resposta => resposta.json()).then(jsonResponse => inicializar());
+            } catch (e) {
+                corpoTabela.innerHTML = e;
+            }
+        }
+        
+
+var modal = document.querySelector("#modal");
+var modalOverlay = document.querySelector("#modal-overlay");
+var closeButton = document.querySelector("#close-button");
+var openButton = document.querySelector("#open-button");
+
+closeButton.addEventListener("click", function() {
+  modal.classList.toggle("closed");
+  modalOverlay.classList.toggle("closed");
+});
+
+openButton.addEventListener("click", function() {
+  modal.classList.toggle("closed");
+  modalOverlay.classList.toggle("closed");
+});
+
+		</script>
+	</body>
+</html>

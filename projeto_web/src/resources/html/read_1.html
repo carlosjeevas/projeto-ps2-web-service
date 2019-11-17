@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Campeonatos (update)</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+		<script src="css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+
+		<div class="bg-modal">
+			<div class="modal">
+
+
+		</div>
+	</div>
+
+
+
+
+
+
+
+		<p><a href="/site">&lt; Voltar para página inicial</a></p>
+                <h1> Campeonatos</h1>
+		<p style="font-weight:bold" id="mensagem"></p>
+		<table>
+			<tr>
+				<th>ID</th>
+                                <td id ="idCampeonato"></td>
+				<th>Nome</th>
+                                <td id="txtNome"></td>
+				<th>Ações</th>
+			</tr>
+				<tbody id="campeonatos">
+			</tbody>
+		</table>
+		<script>
+			const corpoTabela = document.querySelector('#campeonatos');
+const paragrafoMensagem = document.querySelector('#mensagem');
+const textoNome = document.querySelector('#txtNome');
+const celulaID = document.querySelector('#idCampeonato');
+
+var campeonatos = [];
+
+function inicializar() {
+	celulaID.innerHTML = '';
+	textoNome.value = '';
+	listarTodosCampeonatos();
+}
+
+function preencherTabela(camp) {
+	campeonatos = camp;
+	var linhasTabela = '';
+	var n = campeonatos.length;
+	for (var i = 0; i < n; i++) {
+		var campeonato = campeonatos[i];
+		linhasTabela +=
+		`<tr><td>`
+		+ campeonato.id + '</a></td>' +
+		'<td>' + campeonato.nome + '</td>' + 
+		`<td><button class="open-modal" onclick="open">Adicionar Times</button></td>` +
+		`<td><button onclick="selecionarCampeonato(${i})">Visualizar Times</button></td>` +
+		`<td><button onclick="selecionarCampeonato(${i})">Editar</button></td>` +
+		`<td><button onclick="selecionarCampeonato(${i})">Excluir</button></td></tr>\n`;
+	}
+	corpoTabela.innerHTML = linhasTabela;
+}
+
+async function listarTodosCampeonatos() {
+	const URL = `/api/campeonatos`;
+          try {
+            fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
+          } catch (e) {
+            corpoTabela.innerHTML = e;
+          }
+        }
+inicializar();
+		</script>
+	</body>
+</html>

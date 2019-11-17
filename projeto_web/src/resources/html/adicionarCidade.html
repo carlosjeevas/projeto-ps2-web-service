@@ -3,7 +3,7 @@
     <html>
 
     <head>
-        <title>Time</title>
+        <title>Campeonato</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
         <script src="css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
@@ -11,7 +11,7 @@
 
     <body>
         <p><a href="/site">&lt; Voltar para página inicial</a></p>
-        <h1>Adicionar Time</h1>
+        <h1>Adicionar Cidade</h1>
 
         <table>    
             <tr>
@@ -19,47 +19,32 @@
                 <td><input type="text" id="txtNome"></td>
             </tr>
             <tr>
-                <td>Ano de Fundação:</td>
-                <td><input type="text" id="txtAnodeFundacao"></td>
-            </tr>
-            <tr>
-                <td>Cidade:</td>
-                <td><input type="text" id="txtCidade"></td>
-            </tr>
-            <tr>
-                <td>Estado:</td>
+                <td>Estado</td>
                 <td><input type="text" id="txtEstado"></td>
             </tr>
-            <tr><td></td><td><input type="button" onclick="criarTime()" value="Criar"></td></tr>
+            <tr><td></td><td><input type="button" onclick="criarCidade()" value="Criar"></td></tr>
         </table>
         <p style="font-weight:bold" id="mensagem"></p>
         
     <script>
         const textoNome = document.querySelector('#txtNome');
-        const textoAnodeFundacao = document.querySelector('#txtAnodeFundacao');
-        const textoCidade = document.querySelector('#txtCidade');
         const textoEstado = document.querySelector('#txtEstado');
         const paragrafoMensagem = document.querySelector('#mensagem');
         
-        function mostrarMensagem(timeCadastrado) {
+        function mostrarMensagem(cidadeCadastrado) {
             textoNome.value = '';
-            textoAnodeFundacao.value = '';
-            textoCidade.value = '';
-            textoEstado.value = '';
-            paragrafoMensagem.innerHTML = 'Time foi criado com id ' + timeCadastrado.id;
+            paragrafoMensagem.innerHTML = 'Cidade foi criada com id ' + cidadeCadastrado.id;
         }
 
-        async function criarTime() {
-            const URL = `/api/times`;
-            const dadosTime = {
+        async function criarCidade() {
+            const URL = `/api/cidades`;
+            const dadosCidade = {
                                        'nome': textoNome.value,
-                                       'anoFundacao': textoAnodeFundacao.value,
-                                       'cidade': textoCidade.value,
-                                       'estado': textoEstado.value
+                                       'estado': textoEstado.value,
                                    };
             const postRequest =    {
                                         method:'POST',
-                                        body: JSON.stringify(dadosTime),
+                                        body: JSON.stringify(dadosCidade),
                                         headers: { 'Content-type': 'application/json;charset=UTF-8' }
                                    };
             try {

@@ -3,42 +3,48 @@
     <html>
 
     <head>
-        <title>Campeonato</title>
+        <title>Professores (create)</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-        <script src="css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/site/sakura.css">
     </head>
 
     <body>
         <p><a href="/site">&lt; Voltar para página inicial</a></p>
-        <h1>Adicionar Campeonato</h1>
+        <h1>Novo professor</h1>
 
         <table>    
             <tr>
                 <td>Nome:</td>
                 <td><input type="text" id="txtNome"></td>
             </tr>
-            <tr><td></td><td><input type="button" onclick="criarCampeonato()" value="Criar"></td></tr>
+            <tr>
+                <td>Matrícula:</td>
+                <td><input type="text" id="txtMatricula"></td> 
+            </tr>
+            <tr><td></td><td><input type="button" onclick="criarProfessor()" value="Criar"></td></tr>
         </table>
         <p style="font-weight:bold" id="mensagem"></p>
         
     <script>
         const textoNome = document.querySelector('#txtNome');
+        const textoMatricula = document.querySelector('#txtMatricula');
         const paragrafoMensagem = document.querySelector('#mensagem');
         
-        function mostrarMensagem(campeonatoCadastrado) {
+        function mostrarMensagem(professorCadastrado) {
             textoNome.value = '';
-            paragrafoMensagem.innerHTML = 'Campeonato foi criado com id ' + campeonatoCadastrado.id;
+            textoMatricula.value = '';
+            paragrafoMensagem.innerHTML = 'Professor criado com id ' + professorCadastrado.id;
         }
 
-        async function criarCampeonato() {
-            const URL = `/api/campeonatos`;
-            const dadosCampeonato = {
-                                       'nome': textoNome.value
+        async function criarProfessor() {
+            const URL = `/api/professores`;
+            const dadosProfessor = {
+                                       'nome': textoNome.value,
+                                       'matricula': textoMatricula.value
                                    };
             const postRequest =    {
                                         method:'POST',
-                                        body: JSON.stringify(dadosCampeonato),
+                                        body: JSON.stringify(dadosProfessor),
                                         headers: { 'Content-type': 'application/json;charset=UTF-8' }
                                    };
             try {

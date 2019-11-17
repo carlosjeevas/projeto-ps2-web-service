@@ -2,20 +2,20 @@ package ps2.entidade;
 
 public class Empresa {
 
-    private long id;
+    private long id_emp;
     private String nome;
 
-    public Empresa(long id, String nome) {
-        this.id = id;
+    public Empresa(long id_emp, String nome) {
+        this.id_emp = id_emp;
         this.nome = nome;
     }
 
     public long getId() {
-        return id;
+        return id_emp;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long id_emp) {
+        this.id_emp = id_emp;
     }
 
     public String getNome() {

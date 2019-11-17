@@ -10,9 +10,9 @@ public class EmpresaDao {
 
     private final static String sqlC = "INSERT INTO empresas (nome) VALUES (?)";
     private final static String sqlR = "SELECT * FROM empresas";
-    private final static String sqlU = "UPDATE empresas SET nome=? WHERE id_emp=?";
-    private final static String sqlD = "DELETE FROM empresas WHERE id_emp=?";
-    private final static String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";
+    private final static String sqlU = "UPDATE empresas SET nome=? WHERE id=?";
+    private final static String sqlD = "DELETE FROM empresas WHERE id=?";
+    private final static String sqlRById = "SELECT * FROM empresas WHERE id=?";
     private PreparedStatement stmC;
     private PreparedStatement stmR;
     private PreparedStatement stmU;
@@ -34,19 +34,19 @@ public class EmpresaDao {
     }
 
     public long create(Empresa e) throws DaoException {
-        long id = 0;
+        long id_emp = 0;
         try {
             stmC.setString(1, e.getNome());
             int r = stmC.executeUpdate();
             ResultSet rs = stmC.getGeneratedKeys();
             if (rs.next()) {
-                id = rs.getLong(1);
+                id_emp = rs.getLong(1);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DaoException("Falha ao criar registro: " + ex.getMessage());
         }
-        return id;
+        return id_emp;
     }
 
     public List<Empresa> read() throws DaoException {
@@ -54,9 +54,9 @@ public class EmpresaDao {
         try {
             ResultSet rs = stmR.executeQuery();
             while (rs.next()) {
-                long id = rs.getLong("id_emp");
+                long id_emp = rs.getLong("id");
                 String nome = rs.getString("nome");
-                Empresa e = new Empresa(id, nome);
+                Empresa e = new Empresa(id_emp, nome);
                 empresas.add(e);
             }
             rs.close();
