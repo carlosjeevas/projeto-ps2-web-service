@@ -2,62 +2,71 @@
 <html>
 
 <head>
-    <title>Times (update)</title>
+    <title>Times</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-    <script src="css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./sakura.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
     <a href="/site/adicionarTime.html"><button>+ Novo</button></a>
+    <p><a href="/site">&lt; Voltar para página inicial</a></p>
+    <!-- Modal -->
+    <div id="meuModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
-    <div class="modal-overlay" id="modal-overlay"></div>
+            <!-- Conteúdo do modal-->
+            <div class="modal-content">
 
-    <div class="modal" id="modal">
-        <button class="close-button" id="close-button">Obvious Close Button</button>
-        <div class="modal-guts">
-            <h1>Atualizar professor</h1>
+                <!-- Cabeçalho do modal -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Atualizar Time</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
 
-            <table>
-                <tr>
-                </tr>
-                <td>ID:</td>
-                <td id="idTime"></td>
-                <tr>
-                    <td>Nome:</td>
-                    <td><input type="text" id="txtNome"></td>
-                </tr>
-                <tr>
-                    <td>Ano de Fundação:</td>
-                    <td><input type="text" id="txtAnoFundacao"></td>
-                </tr>
-                <tr>
-                    <td>Cidade:</td>
-                    <td><input type="text" id="txtAnoCidade"></td>
-                </tr>
-                <tr>
-                    <td>Estado:</td>
-                    <td><input type="text" id="txtAnoEstado"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="button" onclick="atualizarTime()" value="Salvar"></td>
-                </tr>
-            </table>
+                <!-- Corpo do modal -->
+                <div class="modal-body">
+                    <h1>Atualizar professor</h1>
+
+                    <table>
+                        <tr>
+                        </tr>
+                        <td>ID:</td>
+                        <td id="idTime"></td>
+                        <tr>
+                            <td>Nome:</td>
+                            <td><input type="text" id="txtNome"></td>
+                        </tr>
+                        <tr>
+                            <td>Ano de Fundação:</td>
+                            <td><input type="text" id="txtAnoFundacao"></td>
+                        </tr>
+                        <tr>
+                            <td>Cidade:</td>
+                            <td><input type="text" id="txtCidade"></td>
+                        </tr>
+                        <tr>
+                            <td>Estado:</td>
+                            <td><input type="text" id="txtEstado"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Rodapé do modal-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="atualizarTime()" data-dismiss="modal">Salvar
+                        Alterações</button>
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <button id="open-button" class="open-button">Open Button</button>
 
 
-
-
-
-
-
-
-    <p><a href="/site">&lt; Voltar para página inicial</a></p>
-    <h1> Times</h1>
+    <h1>Times</h1>
     <p style="font-weight:bold" id="mensagem"></p>
     <table>
         <tr>
@@ -80,7 +89,7 @@
         const corpoTabela = document.querySelector('#times');
         const paragrafoMensagem = document.querySelector('#mensagem');
         const textoNome = document.querySelector('#txtNome');
-        const textoAnoFundacao = document.querySelector('#txtAnoFundacao');
+        const textoanoFundacao = document.querySelector('#txtAnoFundacao');
         const textoCidade = document.querySelector('#txtCidade');
         const textoEstado = document.querySelector('#txtEstado');
         const celulaID = document.querySelector('#idTime');
@@ -90,22 +99,20 @@
         function inicializar() {
             celulaID.innerHTML = '';
             textoNome.value = '';
-            textoAnoFundacao.value = '';
+            textoanoFundacao.value = '';
             textoCidade.value = '';
             textoEstado.value = '';
             listarTodosTimes();
         }
 
-        function selecionarTime(id, nome, anoFundacao, cidade, estado) {
-            celulaID.innerHTML = id;
-            textoNome.value = nome;
-            textoAnoFundacao.value = anoFundacao;
-            textoCidade.value = cidade;
-            textoEstado.value = estado;
+        function selecionarTime(pos) {
+            paragrafoMensagem.innerHTML = 'Altere os dados de time e pressione o botão Salvar.'
+            celulaID.innerHTML = times[pos].id;
+            textoNome.value = times[pos].nome;
+            textoanoFundacao.value = times[pos].anoFundacao;
+            textoCidade.value = times[pos].cidade;
+            textoEstado.value = times[pos].estado;
         }
-
-
-
 
 
 
@@ -122,9 +129,8 @@
                     '<td>' + time.anoFundacao + '</td>' +
                     '<td>' + time.cidade + '</td>' +
                     '<td>' + time.estado + '</td>' +
-                    `<td><button class="open-modal" onclick="open">Visualizar os Campeonatos</button></td>` +
-                    `<td><button id="open-button" class="open-button" onclick="selecionarTime('${time.id}','${time.nome}','${time.anoFundacao}','${time.cidade}','${time.estado}')">Editar</button></td>` +
-                    `<td><button onclick="apagarTime(${time.id})">Excluir</button></td></tr>\n`;
+                    `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarTime(${i})">Editar</button></td>` +
+                    `<td><button onclick="apagarTime(${time.id})">Excluir Time</button></td></tr>\n`;
             }
             corpoTabela.innerHTML = linhasTabela;
         }
@@ -158,10 +164,12 @@
             if (celulaID.innerHTML == '') return;
             const ID = celulaID.innerHTML;
             const URL = `/api/times/${ID}`;
-            const dadosProfessor = {
+            const dadosTime = {
                 'id': ID,
                 'nome': textoNome.value,
-                'matricula': textoMatricula.value
+                'anoFundacao': textoanoFundacao.value,
+                'cidade': textoCidade.value,
+                'estado': textoEstado.value
             };
             const putRequest = {
                 method: 'PUT',
@@ -176,22 +184,16 @@
                 corpoTabela.innerHTML = e;
             }
         }
-
-
-        var modal = document.querySelector("#modal");
-        var modalOverlay = document.querySelector("#modal-overlay");
-        var closeButton = document.querySelector("#close-button");
-        var openButton = document.querySelector("#open-button");
-
-        closeButton.addEventListener("click", function () {
-            modal.classList.toggle("closed");
-            modalOverlay.classList.toggle("closed");
-        });
-
-        openButton.addEventListener("click", function () {
-            modal.classList.toggle("closed");
-            modalOverlay.classList.toggle("closed");
-        });
+    </script>
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
 </body>
 

@@ -12,13 +12,13 @@ public class EmpregadoDao {
     private final static String sqlR = "SELECT * FROM empregados";
     private final static String sqlU = "UPDATE empregados SET id_emp=?, nome_empregado=? WHERE id_empregado=?";
     private final static String sqlD = "DELETE FROM empregados WHERE id_empregado=?";
-    private final static String sqlRById = "SELECT * FROM empregados WHERE id_empregado=?";
+    private final String sqlRById = "SELECT * FROM empregados WHERE id_empregado=?";
     private PreparedStatement stmC;
     private PreparedStatement stmR;
     private PreparedStatement stmU;
     private PreparedStatement stmD;
     private PreparedStatement stmRById;
-
+    
     public EmpregadoDao(ConexaoJavaDb conexao) throws DaoException, ConexaoException {
         try {
             Connection con = conexao.getConnection();
@@ -29,24 +29,25 @@ public class EmpregadoDao {
             stmRById = con.prepareStatement(sqlRById);
         } catch (SQLException ex) {
             ex.printStackTrace();
-            throw new DaoException("Falha ao preparar o statement: " + ex.getMessage());
+            throw new DaoException("Falha ao preparar o statement: " + ex.getMessage());            
         }
     }
-
+    
     public long create(Empregado e) throws DaoException {
-        long id = 0;
+        long id_empregado = 0;
         try {
-            stmC.setString(1, e.getNome());
+            stmC.setLong(1, e.getId_Emp());
+            stmC.setString(2, e.getNome());
             int r = stmC.executeUpdate();
             ResultSet rs = stmC.getGeneratedKeys();
             if (rs.next()) {
-                id = rs.getLong(1);
+                id_empregado = rs.getLong(1);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DaoException("Falha ao criar registro: " + ex.getMessage());
         }
-        return id;
+        return id_empregado;
     }
 
     public List<Empregado> read() throws DaoException {
@@ -56,9 +57,8 @@ public class EmpregadoDao {
             while (rs.next()) {
                 long id_empregado = rs.getLong("id_empregado");
                 long id_emp = rs.getLong("id_emp");
-                String nome_empregado = rs.getString("nome_empregado");
-
-                Empregado e = new Empregado(id_empregado, id_emp, nome_empregado);
+                String nome = rs.getString("nome_empregado");
+                Empregado e = new Empregado(id_empregado, id_emp, nome);
                 empregados.add(e);
             }
             rs.close();
@@ -71,8 +71,8 @@ public class EmpregadoDao {
 
     public void update(Empregado e) throws DaoException {
         try {
-            stmU.setString(1, e.getNome());
-            stmU.setLong(2, e.getId_emp());
+            stmU.setLong(1, e.getId_Emp());
+            stmU.setString(2, e.getNome());
             stmU.setLong(3, e.getId());
             int r = stmU.executeUpdate();
         } catch (SQLException ex) {
@@ -103,16 +103,15 @@ public class EmpregadoDao {
     }
 
     public Empregado readById(long id_empregado) throws DaoException {
-
         Empregado e = null;
-
+        
         try {
             stmRById.setLong(1, id_empregado);
             ResultSet rs = stmRById.executeQuery();
             if (rs.next()) {
                 long id_emp = rs.getLong("id_emp");
-                String nome_empregado = rs.getString("nome_empregado");
-                e = new Empregado(id_empregado, id_emp, nome_empregado);
+                String nome = rs.getString("nome");
+                e = new Empregado(id_empregado, id_emp, nome);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
