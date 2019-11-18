@@ -11,7 +11,7 @@ public class BairroDao {
 
     private final static String sqlC = "INSERT INTO BAIRRO (ID_CIDADE,NOME_BAIRRO) VALUES (?,?)";
     private final static String sqlR = "SELECT * FROM BAIRRO";
-    private final static String sqlU = "UPDATE BAIRRO SET ID_CIDADE=?,NOME_BAIRRO=? WHERE ID_BAIRRO=?";
+    private final static String sqlU = "UPDATE BAIRRO SET NOME_BAIRRO=? WHERE ID_BAIRRO=?";
     private final static String sqlD = "DELETE FROM BAIRRO WHERE ID_BAIRRO=?";
     private final static String sqlRById = "SELECT * FROM BAIRRO WHERE ID_BAIRRO=?";
     private PreparedStatement stmC;
