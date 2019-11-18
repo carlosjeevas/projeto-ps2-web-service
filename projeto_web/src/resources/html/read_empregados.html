@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Empregados</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/site/sakura.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+
+</head>
+
+<body>
+  <a href="/site/adicionarEmpregado.html"><button class="btn btn-primary btn-lg mt-1 ml-2">+ Novo</button></a>
+  <p><a href="/site">&lt; Voltar para página inicial</a></p>
+  <!-- Modal -->
+  <div id="meuModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Conteúdo do modal-->
+      <div class="modal-content">
+
+        <!-- Cabeçalho do modal -->
+        <div class="modal-header">
+          <h1 class="modal-title">Atualizar Empregado</h1>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Corpo do modal -->
+        <div class="modal-body">
+          <table>
+            <tr>
+            </tr>
+            <td>ID:</td>
+            <td id="idEmpregado"></td>
+            <tr>
+              <td>Nome:</td>
+              <td><input type="text" id="txtNome"></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Rodapé do modal-->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" onclick="atualizarCampeonato()" data-dismiss="modal">Salvar
+            Alterações</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <h1>Empregado</h1>
+  <p style="font-weight:bold" id="mensagem"></p>
+  <table id="example" class="display" style="width:100%">
+    <tr>
+      <th>ID</th>
+      <td id="idEmpregado"></td>
+      <th>Nome</th>
+      <td id="txtNome"></td>
+      <th>Ações</th>
+    </tr>
+    <tbody id="Empregados">
+    </tbody>
+  </table>
+  <script>
+    const corpoTabela = document.querySelector('#Empregados');
+    const paragrafoMensagem = document.querySelector('#mensagem');
+    const textoNome = document.querySelector('#txtNome');
+    const celulaID = document.querySelector('#idEmpregado');
+
+    var Empregados = [];
+
+    function inicializar() {
+      celulaID.innerHTML = '';
+      textoNome.value = '';
+      listarTodosEmpregados();
+    }
+
+    function selecionarEmpregado(pos) {
+      celulaID.innerHTML = Empregados[pos].id;
+      textoNome.value = Empregados[pos].nome;
+    }
+
+
+
+    function preencherTabela(camp) {
+      empregados = camp;
+      var linhasTabela = '';
+      var n = empregados.length;
+      for (var i = 0; i < n; i++) {
+        var empregado = empregados[i];
+        linhasTabela +=
+          `<tr><td>` +
+          empregado.id + '</a></td>' +
+          '<td>' + empregado.nome + '</td>' +
+          `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpregado(${i})">Visualizar Times</button></td>` +
+          `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpregado(${i})">Adicionar Time</button></td>` +
+          `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpregado(${i})">Editar</button></td>` +
+          `<td><button class="btn btn-danger btn-lg mt-2 ml-2" onclick="apagarEmpregado(${empregado.id})">Excluir Empregado</button></td></tr>\n`;
+      }
+      corpoTabela.innerHTML = linhasTabela;
+    }
+
+    async function listarTodosEmpregados() {
+      const URL = `/api/empregados`;
+      try {
+        fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
+      } catch (e) {
+        corpoTabela.innerHTML = e;
+      }
+    }
+    inicializar();
+
+
+    async function apagarEmpregado(id) {
+      celulaID.innerHTML = id;
+      const ID = celulaID.innerHTML;
+      const URL = `/api/Empregados/${ID}`;
+      const deleteRequest = {
+        method: 'DELETE'
+      };
+      try {
+        fetch(URL, deleteRequest).then(resposta => inicializar());
+      } catch (e) {
+        corpoTabela.innerHTML = e;
+      }
+    }
+
+    async function atualizarEmpregado() {
+      if (celulaID.innerHTML == '') return;
+      const ID = celulaID.innerHTML;
+      const URL = `/api/Empregados/${ID}`;
+      const dadosEmpregado = {
+        'id': ID,
+        'nome': textoNome.value
+      };
+      const putRequest = {
+        method: 'PUT',
+        body: JSON.stringify(dadosEmpregado),
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        }
+      };
+      try {
+        fetch(URL, putRequest).then(resposta => resposta.json()).then(jsonResponse => inicializar());
+      } catch (e) {
+        corpoTabela.innerHTML = e;
+      }
+    }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js">
+  </script>
+</body>
+
+</html>

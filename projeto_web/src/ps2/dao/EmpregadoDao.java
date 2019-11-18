@@ -34,19 +34,20 @@ public class EmpregadoDao {
     }
 
     public long create(Empregado e) throws DaoException {
-        long id = 0;
+        long id_empregado = 0;
         try {
-            stmC.setString(1, e.getNome());
+            stmC.setLong(1, e.getId_emp());
+            stmC.setString(2, e.getNome());            
             int r = stmC.executeUpdate();
             ResultSet rs = stmC.getGeneratedKeys();
             if (rs.next()) {
-                id = rs.getLong(1);
+                id_empregado = rs.getLong(1);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DaoException("Falha ao criar registro: " + ex.getMessage());
         }
-        return id;
+        return id_empregado;
     }
 
     public List<Empregado> read() throws DaoException {
@@ -55,10 +56,10 @@ public class EmpregadoDao {
             ResultSet rs = stmR.executeQuery();
             while (rs.next()) {
                 long id_empregado = rs.getLong("id_empregado");
-                long id_emp = rs.getLong("id_emp");
+                long id = rs.getLong("id_emp");
                 String nome_empregado = rs.getString("nome_empregado");
 
-                Empregado e = new Empregado(id_empregado, id_emp, nome_empregado);
+                Empregado e = new Empregado(id_empregado, id, nome_empregado);
                 empregados.add(e);
             }
             rs.close();
@@ -110,9 +111,9 @@ public class EmpregadoDao {
             stmRById.setLong(1, id_empregado);
             ResultSet rs = stmRById.executeQuery();
             if (rs.next()) {
-                long id_emp = rs.getLong("id_emp");
+                long id = rs.getLong("id_emp");
                 String nome_empregado = rs.getString("nome_empregado");
-                e = new Empregado(id_empregado, id_emp, nome_empregado);
+                e = new Empregado(id_empregado, id, nome_empregado);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

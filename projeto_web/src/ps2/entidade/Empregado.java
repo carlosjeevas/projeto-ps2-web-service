@@ -6,6 +6,9 @@ public class Empregado {
     private long id_emp;
     private String nome;
 
+    public Empregado() {
+    }
+
     public Empregado(long id, long id_emp, String nome) {
         this.id = id;
         this.id_emp = id_emp;
