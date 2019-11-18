@@ -11,7 +11,7 @@
 
     <body>
         <p><a href="/site">&lt; Voltar para página inicial</a></p>
-        <h1>Adicionar Empresa</h1>
+        <h1>Adicionar Empregado</h1>
 
         <table>
             <tr>
@@ -19,29 +19,36 @@
                 <td><input type="text" id="txtNome"></td>
             </tr>
             <tr>
+                <td>ID Empresa:</td>
+                <td><input type="text" id="txtIdEmp"></td>
+            </tr>
+            <tr>
                 <td></td>
-                <td><input type="button" onclick="criarEmpresa()" value="Criar"></td>
+                <td><input type="button" onclick="criarEmpregado()" value="Criar"></td>
             </tr>
         </table>
         <p style="font-weight:bold" id="mensagem"></p>
 
         <script>
             const textoNome = document.querySelector('#txtNome');
+            const textoIdEmp = document.querySelector('#txtIdEmp');
             const paragrafoMensagem = document.querySelector('#mensagem');
 
-            function mostrarMensagem(empresasCadastradas) {
+            function mostrarMensagem(empregadosCadastrados) {
                 textoNome.value = '';
-                paragrafoMensagem.innerHTML = 'Empresa foi criada com id ' + empresasCadastradas.id;
+                textoIdEmp.value = '';
+                paragrafoMensagem.innerHTML = 'Empregado foi criado com id ' + empregadosCadastrados.id;
             }
 
-            async function criarEmpresa() {
-                const URL = `/api/empresas`;
-                const dadosEmpresa = {
-                    'nome': textoNome.value
+            async function criarEmpregado() {
+                const URL = `/api/empregados`;
+                const dadosEmpregado = {
+                    'id_emp': textoIdEmp.value,
+                    'nome_empregado': textoNome.value
                 };
                 const postRequest = {
                     method: 'POST',
-                    body: JSON.stringify(dadosEmpresa),
+                    body: JSON.stringify(dadosEmpregado),
                     headers: {
                         'Content-type': 'application/json;charset=UTF-8'
                     }
