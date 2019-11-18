@@ -5,6 +5,9 @@ public class Empresa {
     private long id_emp;
     private String nome;
 
+    public Empresa() {
+    }
+
     public Empresa(long id_emp, String nome) {
         this.id_emp = id_emp;
         this.nome = nome;

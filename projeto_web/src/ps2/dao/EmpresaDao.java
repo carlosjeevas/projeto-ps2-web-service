@@ -12,7 +12,7 @@ public class EmpresaDao {
     private final static String sqlR = "SELECT * FROM empresas";
     private final static String sqlU = "UPDATE empresas SET nome=? WHERE id_emp=?";
     private final static String sqlD = "DELETE FROM empresas WHERE id_emp=?";
-    private final static String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";
+    private final String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";
     private PreparedStatement stmC;
     private PreparedStatement stmR;
     private PreparedStatement stmU;
@@ -33,20 +33,20 @@ public class EmpresaDao {
         }
     }
 
-    public long create(Empresa e) throws DaoException {
-        long id_emp = 0;
+    public long create(Empresa t) throws DaoException {
+        long id = 0;
         try {
-            stmC.setString(1, e.getNome());
+            stmC.setString(1, t.getNome());
             int r = stmC.executeUpdate();
             ResultSet rs = stmC.getGeneratedKeys();
             if (rs.next()) {
-                id_emp = rs.getLong(1);
+                id = rs.getLong(1);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DaoException("Falha ao criar registro: " + ex.getMessage());
         }
-        return id_emp;
+        return id;
     }
 
     public List<Empresa> read() throws DaoException {
@@ -54,10 +54,10 @@ public class EmpresaDao {
         try {
             ResultSet rs = stmR.executeQuery();
             while (rs.next()) {
-                long id_emp = rs.getLong("id_emp");
+                long id = rs.getLong("id_emp");
                 String nome = rs.getString("nome");
-                Empresa e = new Empresa(id_emp, nome);
-                empresas.add(e);
+                Empresa t = new Empresa(id, nome);
+                empresas.add(t);
             }
             rs.close();
         } catch (SQLException ex) {
@@ -67,10 +67,10 @@ public class EmpresaDao {
         return empresas;
     }
 
-    public void update(Empresa e) throws DaoException {
+    public void update(Empresa t) throws DaoException {
         try {
-            stmU.setString(1, e.getNome());
-            stmU.setLong(2, e.getId());
+            stmU.setString(1, t.getNome());
+            stmU.setLong(2, t.getId());
             int r = stmU.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -78,9 +78,9 @@ public class EmpresaDao {
         }
     }
 
-    public void delete(long id_emp) throws DaoException {
+    public void delete(long id) throws DaoException {
         try {
-            stmD.setLong(1, id_emp);
+            stmD.setLong(1, id);
             int r = stmD.executeUpdate();
         } catch (SQLException ex) {
             throw new DaoException("Falha ao apagar registro: " + ex.getMessage());
@@ -99,20 +99,20 @@ public class EmpresaDao {
         }
     }
 
-    public Empresa readById(long id_emp) throws DaoException {
-        Empresa e = null;
+    public Empresa readById(long id) throws DaoException {
+        Empresa t = null;
 
         try {
-            stmRById.setLong(1, id_emp);
+            stmRById.setLong(1, id);
             ResultSet rs = stmRById.executeQuery();
             if (rs.next()) {
                 String nome = rs.getString("nome");
-                e = new Empresa(id_emp, nome);
+                t = new Empresa(id, nome);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DaoException("Falha ao buscar pelo id: " + ex.getMessage());
         }
-        return e;
+        return t;
     }
 }
