@@ -2,40 +2,37 @@ package ps2.entidade;
 
 public class Empregado {
 
-    private long id_empregado;
+    private long id;
     private long id_emp;
-    private String nome_empregado;
+    private String nome;
 
-    public Empregado() {
-    }
-
-    public Empregado(long id_empregado, long id_emp, String nome_empregado) {
-        this.id_empregado = id_empregado;
+    public Empregado(long id, long id_emp, String nome) {
+        this.id = id;
         this.id_emp = id_emp;
-        this.nome_empregado = nome_empregado;
+        this.nome = nome;
     }
 
     public long getId() {
-        return id_empregado;
+        return id;
     }
 
-    public long getId_Emp() {
+    public long getId_emp() {
         return id_emp;
     }
 
     public String getNome() {
-        return nome_empregado;
+        return nome;
     }
 
-    public void setId(long id_empregado) {
-        this.id_empregado = id_empregado;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setIdEmp(int id_emp) {
+    public void setId_emp(long id_emp) {
         this.id_emp = id_emp;
     }
 
-    public void setNome(String n) {
-        nome_empregado = n;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }
