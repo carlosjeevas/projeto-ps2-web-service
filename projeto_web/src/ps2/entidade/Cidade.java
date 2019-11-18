@@ -6,12 +6,12 @@ public class Cidade {
     private String nome;
     private String estado;
     
-    public Cidade () {}
+    public Cidade(){}
 
     public Cidade(long id, String nome, String estado) {
         this.id = id;
         this.nome = nome;
-        this.estado = nome;
+        this.estado = estado;
     }
 
     public long getId() {
@@ -31,7 +31,7 @@ public class Cidade {
     }
 
     public String getEstado() {
-        return nome;
+        return estado;
     }
     
     public void setEstado(String estado) {

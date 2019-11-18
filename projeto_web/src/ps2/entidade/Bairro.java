@@ -5,6 +5,8 @@ public class Bairro {
     private long id;
     private long id_cid;
     private String nome;
+    
+    public Bairro(){}
 
     public Bairro(long id, long id_cid, String nome) {
         this.id = id;
