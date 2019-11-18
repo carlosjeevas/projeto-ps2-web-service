@@ -3,57 +3,51 @@
     <html>
 
     <head>
-        <title>Campeonato</title>
+        <title>Empresa</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-        <script src="css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/site/sakura.css">
     </head>
 
     <body>
         <p><a href="/site">&lt; Voltar para página inicial</a></p>
         <h1>Adicionar Empresa</h1>
 
-        <table>
+        <table>    
             <tr>
                 <td>Nome:</td>
                 <td><input type="text" id="txtNome"></td>
             </tr>
-            <tr>
-                <td></td>
-                <td><input type="button" onclick="criarEmpresa()" value="Criar"></td>
-            </tr>
+            <tr><td></td><td><input type="button" onclick="criarEmpresa()" value="Criar"></td></tr>
         </table>
         <p style="font-weight:bold" id="mensagem"></p>
+        
+    <script>
+        const textoNome = document.querySelector('#txtNome');
+        const paragrafoMensagem = document.querySelector('#mensagem');
+        
+        function mostrarMensagem(empresaCadastrado) {
+            textoNome.value = '';
+            paragrafoMensagem.innerHTML = 'Campeonato foi criado com id ' + empresaCadastrado.id_emp;
+        }
 
-        <script>
-            const textoNome = document.querySelector('#txtNome');
-            const paragrafoMensagem = document.querySelector('#mensagem');
-
-            function mostrarMensagem(empresasCadastradas) {
-                textoNome.value = '';
-                paragrafoMensagem.innerHTML = 'Empresa foi criada com id ' + empresasCadastradas.id;
+        async function criarEmpresa() {
+            const URL = `/api/empresas`;
+            const dadosEmpresa = {
+                                       'nome': textoNome.value
+                                   };
+            const postRequest =    {
+                                        method:'POST',
+                                        body: JSON.stringify(dadosEmpresa),
+                                        headers: { 'Content-type': 'application/json;charset=UTF-8' }
+                                   };
+            try {
+                fetch(URL, postRequest).then(resposta => resposta.json()).then(jsonResponse => mostrarMensagem(jsonResponse));
+            } catch (e) {
+                corpoTabela.innerHTML = e;
             }
+        }
 
-            async function criarEmpresa() {
-                const URL = `/api/empresas`;
-                const dadosEmpresa = {
-                    'nome': textoNome.value
-                };
-                const postRequest = {
-                    method: 'POST',
-                    body: JSON.stringify(dadosEmpresa),
-                    headers: {
-                        'Content-type': 'application/json;charset=UTF-8'
-                    }
-                };
-                try {
-                    fetch(URL, postRequest).then(resposta => resposta.json()).then(jsonResponse => mostrarMensagem(
-                        jsonResponse));
-                } catch (e) {
-                    corpoTabela.innerHTML = e;
-                }
-            }
-        </script>
+    </script>
     </body>
 
     </html>

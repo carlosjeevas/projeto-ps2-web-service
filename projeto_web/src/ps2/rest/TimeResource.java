@@ -11,7 +11,10 @@ import ps2.dao.DaoException;
 import ps2.dao.TimeDao;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import io.dropwizard.jersey.*;
 import io.dropwizard.jersey.params.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import ps2.entidade.Time;
 /**

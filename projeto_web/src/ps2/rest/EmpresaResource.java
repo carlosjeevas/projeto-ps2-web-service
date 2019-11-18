@@ -1,11 +1,12 @@
 package ps2.rest;
 
 import ps2.dao.DaoException;
+import ps2.dao.EmpresaDao;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import io.dropwizard.jersey.*;
 import io.dropwizard.jersey.params.*;
 import java.util.*;
-import ps2.dao.EmpresaDao;
 import ps2.entidade.Empresa;
 
 @Path("/empresas")
@@ -24,8 +25,8 @@ public class EmpresaResource {
     public Empresa create(Empresa e) {
         Empresa resp;
         try {
-            long id = dao.create(e);
-            e.setId(id);
+            long id_emp = dao.create(e);
+            e.setId(id_emp);
             resp = e;
         } catch (DaoException ex) {
             ex.printStackTrace();
@@ -36,43 +37,43 @@ public class EmpresaResource {
 
     @GET
     public List<Empresa> read() {
-        List<Empresa> Empresas;
+        List<Empresa> empresas;
         try {
-            Empresas = dao.read();
+            empresas = dao.read();
         } catch (DaoException ex) {
             ex.printStackTrace();
-            Empresas = null;
+            empresas = null;
         }
-        return Empresas;
+        return empresas;
     }
 
     @PUT
     @Path("{id_emp}")
-    public Empresa update(@PathParam("id_emp") LongParam id, Empresa t) {
+    public Empresa update(@PathParam("id_emp") LongParam id_emp, Empresa e) {
         Empresa resp;
         try {
-            t.setId(id.get());
-            dao.update(t);
-            resp = t;
+            e.setId(id_emp.get());
+            dao.update(e);
+            resp = e;
         } catch (DaoException ex) {
             ex.printStackTrace();
             resp = null;
         }
-        return t;
+        return e;
     }
 
     @DELETE
     @Path("{id_emp}")
     public Response delete(@PathParam("id_emp") LongParam id_emp) {
-        Empresa t;
+        Empresa e;
         try {
-            t = dao.readById(id_emp.get());
+            e = dao.readById(id_emp.get());
         } catch (DaoException ex) {
             ex.printStackTrace();
-            throw new WebApplicationException("Erro ao buscar Empresa com id="
+            throw new WebApplicationException("Erro ao buscar campenato com id="
                     + id_emp.get(), 500);
         }
-        if (t != null) {
+        if (e != null) {
             try {
                 dao.delete(id_emp.get());
             } catch (DaoException ex) {

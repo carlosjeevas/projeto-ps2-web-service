@@ -1,158 +1,152 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <title>Times</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="./sakura.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-
-<body>
-    <a href="/site/adicionarTime.html"><button>+ Novo</button></a>
-    <p><a href="/site">&lt; Voltar para página inicial</a></p>
-    <!-- Modal -->
+	<head>
+		<title>Times</title>
+		<meta charset="UTF-8">
+                <link rel="stylesheet" href="/site/sakura.css">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	</head>
+	<body>
+                <a href="/site/adicionarTime.html"><button class="btn btn-primary btn-lg mt-1 ml-2">+ Novo</button></a> 
+		<p><a href="/site">&lt; Voltar para página inicial</a></p>
+                    <!-- Modal -->
     <div id="meuModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Conteúdo do modal-->
-            <div class="modal-content">
-
-                <!-- Cabeçalho do modal -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Atualizar Time</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Corpo do modal -->
-                <div class="modal-body">
-                    <h1>Atualizar professor</h1>
-
-                    <table>
-                        <tr>
-                        </tr>
-                        <td>ID:</td>
-                        <td id="idTime"></td>
-                        <tr>
-                            <td>Nome:</td>
-                            <td><input type="text" id="txtNome"></td>
-                        </tr>
-                        <tr>
-                            <td>Ano de Fundação:</td>
-                            <td><input type="text" id="txtAnoFundacao"></td>
-                        </tr>
-                        <tr>
-                            <td>Cidade:</td>
-                            <td><input type="text" id="txtCidade"></td>
-                        </tr>
-                        <tr>
-                            <td>Estado:</td>
-                            <td><input type="text" id="txtEstado"></td>
-                        </tr>
-                    </table>
-                </div>
-
-                <!-- Rodapé do modal-->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="atualizarTime()" data-dismiss="modal">Salvar
-                        Alterações</button>
-                </div>
-
-            </div>
+      <div class="modal-dialog">
+ 
+        <!-- Conteúdo do modal-->
+        <div class="modal-content">
+ 
+          <!-- Cabeçalho do modal -->
+          <div class="modal-header">
+            <h1 class="modal-title">Atualizar Time</h1>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+ 
+          <!-- Corpo do modal -->
+          <div class="modal-body">
+        <table>    
+            <tr>
+            </tr>
+                <td>ID:</td>
+                <td id="idTime"></td>
+            <tr>
+                <td>Nome:</td>
+                <td><input type="text" id="txtNome"></td>
+            </tr>
+            <tr>
+                <td>Ano de Fundação:</td>
+                <td><input type="text" id="txtAnoFundacao"></td>
+            </tr>
+            <tr>
+                <td>Cidade:</td>
+                <td><input type="text" id="txtCidade"></td>
+            </tr>
+            <tr>
+                <td>Estado:</td>
+                <td><input type="text" id="txtEstado"></td>
+            </tr>
+        </table>
+          </div>
+ 
+          <!-- Rodapé do modal-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-primary" onclick="atualizarTime()" data-dismiss="modal">Salvar Alterações</button>
+          </div>
+ 
         </div>
+      </div>
     </div>
+                
+                
+                
+                <h1>Times</h1>
+		<p style="font-weight:bold" id="mensagem"></p>
+		<table>
+			<tr>
+				<th>ID</th>
+                                <td id ="idTime"></td>
+				<th>Nome</th>
+                                <td id="txtNome"></td>
+                                <th>Ano de Fundação</th>
+                                <td id="txtAnoFundacao"></td>
+                                <th>Cidade</th>
+                                <td id="txtCidade"></td>
+                                <th>Estado</th>
+                                <td id="txtEstado"></td>
+				<th>Ações</th>
+			</tr>
+				<tbody id="times">
+			</tbody>
+		</table>
+		<script>
+			const corpoTabela = document.querySelector('#times');
+const paragrafoMensagem = document.querySelector('#mensagem');
+const textoNome = document.querySelector('#txtNome');
+const textoanoFundacao = document.querySelector('#txtAnoFundacao');
+const textoCidade = document.querySelector('#txtCidade');
+const textoEstado = document.querySelector('#txtEstado');
+const celulaID = document.querySelector('#idTime');
+
+var times = [];
+
+function inicializar() {
+	celulaID.innerHTML = '';
+	textoNome.value = '';
+        textoanoFundacao.value = '';
+        textoCidade.value = '';
+        textoEstado.value = '';
+	listarTodosTimes();
+}
+
+function selecionarTime(pos) {
+	paragrafoMensagem.innerHTML = 'Altere os dados de time e pressione o botão Salvar.'
+	celulaID.innerHTML = times[pos].id;
+	textoNome.value = times[pos].nome;
+        textoanoFundacao.value = times[pos].anoFundacao;
+        textoCidade.value = times[pos].cidade;
+        textoEstado.value = times[pos].estado;
+}
 
 
 
-    <h1>Times</h1>
-    <p style="font-weight:bold" id="mensagem"></p>
-    <table>
-        <tr>
-            <th>ID</th>
-            <td id="idTime"></td>
-            <th>Nome</th>
-            <td id="txtNome"></td>
-            <th>Ano de Fundação</th>
-            <td id="txtAnoFundacao"></td>
-            <th>Cidade</th>
-            <td id="txtCidade"></td>
-            <th>Estado</th>
-            <td id="txtEstado"></td>
-            <th>Ações</th>
-        </tr>
-        <tbody id="times">
-        </tbody>
-    </table>
-    <script>
-        const corpoTabela = document.querySelector('#times');
-        const paragrafoMensagem = document.querySelector('#mensagem');
-        const textoNome = document.querySelector('#txtNome');
-        const textoanoFundacao = document.querySelector('#txtAnoFundacao');
-        const textoCidade = document.querySelector('#txtCidade');
-        const textoEstado = document.querySelector('#txtEstado');
-        const celulaID = document.querySelector('#idTime');
+function preencherTabela(tim) {
+	times = tim;
+	var linhasTabela = '';
+	var n = times.length;
+	for (var i = 0; i < n; i++) {
+		var time = times[i];
+		linhasTabela +=
+		`<tr><td>`
+		+ time.id + '</a></td>' +
+		'<td>' + time.nome + '</td>' +
+                '<td>' + time.anoFundacao + '</td>' +
+                '<td>' + time.cidade + '</td>' +
+                '<td>' + time.estado + '</td>' +
+		`<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarTime(${i})">Editar</button></td>` +
+		`<td><button class="btn btn-danger btn-lg mt-2 ml-2" onclick="apagarTime(${time.id})">Excluir Time</button></td></tr>\n`;
+	}
+	corpoTabela.innerHTML = linhasTabela;
+}
 
-        var times = [];
-
-        function inicializar() {
-            celulaID.innerHTML = '';
-            textoNome.value = '';
-            textoanoFundacao.value = '';
-            textoCidade.value = '';
-            textoEstado.value = '';
-            listarTodosTimes();
+async function listarTodosTimes() {
+	const URL = `/api/times`;
+          try {
+            fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
+          } catch (e) {
+            corpoTabela.innerHTML = e;
+          }
         }
-
-        function selecionarTime(pos) {
-            paragrafoMensagem.innerHTML = 'Altere os dados de time e pressione o botão Salvar.'
-            celulaID.innerHTML = times[pos].id;
-            textoNome.value = times[pos].nome;
-            textoanoFundacao.value = times[pos].anoFundacao;
-            textoCidade.value = times[pos].cidade;
-            textoEstado.value = times[pos].estado;
-        }
+inicializar();
 
 
-
-        function preencherTabela(tim) {
-            times = tim;
-            var linhasTabela = '';
-            var n = times.length;
-            for (var i = 0; i < n; i++) {
-                var time = times[i];
-                linhasTabela +=
-                    `<tr><td>` +
-                    time.id + '</a></td>' +
-                    '<td>' + time.nome + '</td>' +
-                    '<td>' + time.anoFundacao + '</td>' +
-                    '<td>' + time.cidade + '</td>' +
-                    '<td>' + time.estado + '</td>' +
-                    `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarTime(${i})">Editar</button></td>` +
-                    `<td><button onclick="apagarTime(${time.id})">Excluir Time</button></td></tr>\n`;
-            }
-            corpoTabela.innerHTML = linhasTabela;
-        }
-
-        async function listarTodosTimes() {
-            const URL = `/api/times`;
-            try {
-                fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
-            } catch (e) {
-                corpoTabela.innerHTML = e;
-            }
-        }
-        inicializar();
-
-
-        async function apagarTime(id) {
+       async function apagarTime(id) {
             celulaID.innerHTML = id;
             const ID = celulaID.innerHTML;
             const URL = `/api/times/${ID}`;
-            const deleteRequest = {
-                method: 'DELETE'
-            };
+            const deleteRequest =    {
+                                        method:'DELETE'
+                                     };
             try {
                 fetch(URL, deleteRequest).then(resposta => inicializar());
             } catch (e) {
@@ -165,36 +159,29 @@
             const ID = celulaID.innerHTML;
             const URL = `/api/times/${ID}`;
             const dadosTime = {
-                'id': ID,
-                'nome': textoNome.value,
-                'anoFundacao': textoanoFundacao.value,
-                'cidade': textoCidade.value,
-                'estado': textoEstado.value
-            };
-            const putRequest = {
-                method: 'PUT',
-                body: JSON.stringify(dadosTime),
-                headers: {
-                    'Content-type': 'application/json;charset=UTF-8'
-                }
-            };
+                                       'id': ID,
+                                       'nome': textoNome.value,
+                                       'anoFundacao': textoanoFundacao.value,
+                                       'cidade': textoCidade.value,
+                                       'estado': textoEstado.value
+                                   };
+            const putRequest =    {
+                                        method:'PUT',
+                                        body: JSON.stringify(dadosTime),
+                                        headers: { 'Content-type': 'application/json;charset=UTF-8' }
+                                   };
             try {
                 fetch(URL, putRequest).then(resposta => resposta.json()).then(jsonResponse => inicializar());
             } catch (e) {
                 corpoTabela.innerHTML = e;
             }
         }
-    </script>
-    </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
-</body>
 
+
+
+		</script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	</body>
 </html>

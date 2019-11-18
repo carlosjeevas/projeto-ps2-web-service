@@ -11,6 +11,7 @@ import ps2.dao.DaoException;
 import ps2.dao.CampeonatoDao;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import io.dropwizard.jersey.*;
 import io.dropwizard.jersey.params.*;
 import java.util.*;
 import ps2.entidade.Campeonato;

@@ -5,27 +5,24 @@ public class Empresa {
     private long id_emp;
     private String nome;
 
-    public Empresa() {
-    }
-
-    public Empresa(long id, String n) {
-        this.id_emp = id;
-        nome = n;
+    public Empresa(long id_emp, String nome) {
+        this.id_emp = id_emp;
+        this.nome = nome;
     }
 
     public long getId() {
         return id_emp;
     }
 
+    public void setId(long id_emp) {
+        this.id_emp = id_emp;
+    }
+
     public String getNome() {
         return nome;
     }
 
-    public void setId(long id) {
-        this.id_emp = id;
-    }
-
-    public void setNome(String n) {
-        nome = n;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

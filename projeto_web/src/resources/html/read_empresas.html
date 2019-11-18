@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Campeonatos</title>
+		<title>Empresas</title>
 		<meta charset="UTF-8">
                 <link rel="stylesheet" href="/site/sakura.css">
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -12,7 +12,7 @@
   
 	</head>
 	<body>
-                <a href="/site/adicionarCampeonato.html"><button class="btn btn-primary btn-lg mt-1 ml-2">+ Novo</button></a> 
+                <a href="/site/adicionarEmpresa.html"><button class="btn btn-primary btn-lg mt-1 ml-2">+ Novo</button></a> 
 		<p><a href="/site">&lt; Voltar para página inicial</a></p>
                     <!-- Modal -->
     <div id="meuModal" class="modal fade" role="dialog">
@@ -23,7 +23,7 @@
  
           <!-- Cabeçalho do modal -->
           <div class="modal-header">
-            <h1 class="modal-title">Atualizar Campeonato</h1>
+            <h1 class="modal-title">Atualizar Empresa</h1>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
  
@@ -33,7 +33,7 @@
             <tr>
             </tr>
                 <td>ID:</td>
-                <td id="idCampeonato"></td>
+                <td id="idEmpresa"></td>
             <tr>
                 <td>Nome:</td>
                 <td><input type="text" id="txtNome"></td>
@@ -44,7 +44,7 @@
           <!-- Rodapé do modal-->
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary" onclick="atualizarCampeonato()" data-dismiss="modal">Salvar Alterações</button>
+            <button type="button" class="btn btn-primary" onclick="atualizarEmpresa()" data-dismiss="modal">Salvar Alterações</button>
           </div>
  
         </div>
@@ -53,60 +53,58 @@
                 
                 
                 
-                <h1>Campeonato</h1>
+                <h1>Empresa</h1>
 		<p style="font-weight:bold" id="mensagem"></p>
 		<table id="example" class="display" style="width:100%">
 			<tr>
 				<th>ID</th>
-                                <td id ="idCampeonato"></td>
+                                <td id ="idEmpresa"></td>
 				<th>Nome</th>
                                 <td id="txtNome"></td>
 				<th>Ações</th>
 			</tr>
-				<tbody id="campeonatos">
+				<tbody id="empresas">
 			</tbody>
 		</table>
 		<script>
-			const corpoTabela = document.querySelector('#campeonatos');
+			const corpoTabela = document.querySelector('#empresas');
 const paragrafoMensagem = document.querySelector('#mensagem');
 const textoNome = document.querySelector('#txtNome');
-const celulaID = document.querySelector('#idCampeonato');
+const celulaID = document.querySelector('#idEmpresa');
 
-var campeonatos = [];
+var empresas = [];
 
 function inicializar() {
 	celulaID.innerHTML = '';
 	textoNome.value = '';
-	listarTodosCampeonatos();
+	listarTodosEmpresas();
 }
 
-function selecionarCampeonato(pos) {
-	celulaID.innerHTML = campeonatos[pos].id;
-	textoNome.value = campeonatos[pos].nome;
+function selecionarEmpresa(pos) {
+	celulaID.innerHTML = empresas[pos].id;
+	textoNome.value = empresas[pos].nome;
 }
 
 
 
-function preencherTabela(camp) {
-	campeonatos = camp;
+function preencherTabela(emp) {
+	empresas = emp;
 	var linhasTabela = '';
-	var n = campeonatos.length;
+	var n = empresas.length;
 	for (var i = 0; i < n; i++) {
-		var campeonato = campeonatos[i];
+		var empresa = empresas[i];
 		linhasTabela +=
 		`<tr><td>`
-		+ campeonato.id + '</a></td>' +
-		'<td>' + campeonato.nome + '</td>' +
-		`<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarCampeonato(${i})">Visualizar Times</button></td>` +
-                `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarCampeonato(${i})">Adicionar Time</button></td>` +
-                `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarCampeonato(${i})">Editar</button></td>` +
-		`<td><button class="btn btn-danger btn-lg mt-2 ml-2" onclick="apagarCampeonato(${campeonato.id})">Excluir Campeonato</button></td></tr>\n`;
+		+ empresa.id + '</a></td>' +
+		'<td>' + empresa.nome + '</td>' +
+		`<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpresa(${i})">Editar</button></td>` +
+		`<td><button class="btn btn-danger btn-lg mt-2 ml-2" onclick="apagarEmpresa(${empresa.id})">Excluir</button></td></tr>\n`;
 	}
 	corpoTabela.innerHTML = linhasTabela;
 }
 
-async function listarTodosCampeonatos() {
-	const URL = `/api/campeonatos`;
+async function listarTodosEmpresas() {
+	const URL = `/api/empresas`;
           try {
             fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
           } catch (e) {
@@ -116,10 +114,10 @@ async function listarTodosCampeonatos() {
 inicializar();
 
 
-       async function apagarCampeonato(id) {
+       async function apagarEmpresa(id) {
             celulaID.innerHTML = id;
             const ID = celulaID.innerHTML;
-            const URL = `/api/campeonatos/${ID}`;
+            const URL = `/api/empresas/${ID}`;
             const deleteRequest =    {
                                         method:'DELETE'
                                      };
@@ -130,17 +128,17 @@ inicializar();
             }
         }
 
-        async function atualizarCampeonato() {
+        async function atualizarEmpresa() {
             if (celulaID.innerHTML == '') return;
             const ID = celulaID.innerHTML;
-            const URL = `/api/campeonatos/${ID}`;
-            const dadosCampeonato = {
-                                       'id': ID,
-                                       'nome': textoNome.value
+            const URL = `/api/empresas/${ID}`;
+            const dadosEmpresa = {
+                                       'nome': textoNome.value,
+                                       'id': ID
                                    };
             const putRequest =    {
                                         method:'PUT',
-                                        body: JSON.stringify(dadosCampeonato),
+                                        body: JSON.stringify(dadosEmpresa),
                                         headers: { 'Content-type': 'application/json;charset=UTF-8' }
                                    };
             try {

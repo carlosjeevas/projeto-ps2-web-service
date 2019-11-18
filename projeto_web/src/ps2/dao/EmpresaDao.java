@@ -12,7 +12,7 @@ public class EmpresaDao {
     private final static String sqlR = "SELECT * FROM empresas";
     private final static String sqlU = "UPDATE empresas SET nome=? WHERE id_emp=?";
     private final static String sqlD = "DELETE FROM empresas WHERE id_emp=?";
-    private final String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";
+    private final static String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";
     private PreparedStatement stmC;
     private PreparedStatement stmR;
     private PreparedStatement stmU;
@@ -70,7 +70,7 @@ public class EmpresaDao {
     public void update(Empresa e) throws DaoException {
         try {
             stmU.setString(1, e.getNome());
-            stmU.setLong(5, e.getId());
+            stmU.setLong(2, e.getId());
             int r = stmU.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();

@@ -4,6 +4,10 @@ import ps2.rest.CampeonatoResource;
 import ps2.rest.TimeResource;
 import ps2.dao.CampeonatoDao;
 import ps2.dao.TimeDao;
+import ps2.dao.EmpregadoDao;
+import ps2.dao.EmpresaDao;
+import ps2.rest.EmpregadoResource;
+import ps2.rest.EmpresaResource;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
@@ -12,12 +16,8 @@ import io.dropwizard.assets.AssetsBundle;
 import ps2.conexao.ConexaoJavaDb;
 import ps2.dao.BairroDao;
 import ps2.dao.CidadeDao;
-import ps2.dao.EmpregadoDao;
-import ps2.dao.EmpresaDao;
 import ps2.rest.BairroResource;
 import ps2.rest.CidadeResource;
-import ps2.rest.EmpregadoResource;
-import ps2.rest.EmpresaResource;
 
 public class FaculdadeApp extends Application<Configuration> {
     public static void main(String[] args) throws Exception {

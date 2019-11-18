@@ -8,11 +8,11 @@ import ps2.entidade.Empregado;
 
 public class EmpregadoDao {
 
-    private final static String sqlC = "INSERT INTO EMPREGADOS (ID_EMP,NOME_EMPREGADO) VALUES (?,?)";
-    private final static String sqlR = "SELECT * FROM EMPREGADOS";
-    private final static String sqlU = "UPDATE EMPREGADOS SET ID_EMP=?, NOME_EMPREGADO=?";
-    private final static String sqlD = "DELETE FROM empregados WHERE ID=?";
-    private final static String sqlRById = "SELECT * FROM empregados WHERE ID=?";
+    private final static String sqlC = "INSERT INTO empregados (id_emp, nome_empregado) VALUES (?,?)";
+    private final static String sqlR = "SELECT * FROM empregados";
+    private final static String sqlU = "UPDATE empregados SET id_emp=?, nome_empregado=? WHERE id_empregado=?";
+    private final static String sqlD = "DELETE FROM empregados WHERE id_empregado=?";
+    private final static String sqlRById = "SELECT * FROM empregados WHERE id_empregado=?";
     private PreparedStatement stmC;
     private PreparedStatement stmR;
     private PreparedStatement stmU;
@@ -54,11 +54,11 @@ public class EmpregadoDao {
         try {
             ResultSet rs = stmR.executeQuery();
             while (rs.next()) {
-                long id = rs.getLong("id");
+                long id_empregado = rs.getLong("id_empregado");
                 long id_emp = rs.getLong("id_emp");
                 String nome_empregado = rs.getString("nome_empregado");
 
-                Empregado e = new Empregado(id, id_emp, nome_empregado);
+                Empregado e = new Empregado(id_empregado, id_emp, nome_empregado);
                 empregados.add(e);
             }
             rs.close();
@@ -102,17 +102,17 @@ public class EmpregadoDao {
         }
     }
 
-    public Empregado readById(long id) throws DaoException {
+    public Empregado readById(long id_empregado) throws DaoException {
 
         Empregado e = null;
 
         try {
-            stmRById.setLong(1, id);
+            stmRById.setLong(1, id_empregado);
             ResultSet rs = stmRById.executeQuery();
             if (rs.next()) {
-                long id_emp = rs.getLong("id");
+                long id_emp = rs.getLong("id_emp");
                 String nome_empregado = rs.getString("nome_empregado");
-                e = new Empregado(id, id_emp, nome_empregado);
+                e = new Empregado(id_empregado, id_emp, nome_empregado);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

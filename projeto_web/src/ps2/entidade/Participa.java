@@ -15,14 +15,14 @@ public class Participa {
  
     public Participa() {}
    
-    public Participa (long it, long ic) {
-        idtime = it;
-        idcampeonato = ic;
+    public Participa (long idt, long idc) {
+        idtime = idt;
+        idcampeonato = idc;
     }
     
     public long getIdTime () {return idtime;}
     public long getIdCampeonato () {return idcampeonato;}
     
-    public void setIdTime (long it) {idtime = it;}
-    public void setIdCampeonato (long ic) {idcampeonato = ic;}
+    public void setIdTime (long idt) {idtime = idt;}
+    public void setIdCampeonato (long idc) {idcampeonato = idc;}
 }

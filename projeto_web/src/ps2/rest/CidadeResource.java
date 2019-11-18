@@ -1,12 +1,15 @@
 package ps2.rest;
 
 import ps2.dao.DaoException;
+import ps2.dao.EmpresaDao;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import io.dropwizard.jersey.*;
 import io.dropwizard.jersey.params.*;
 import java.util.*;
 import ps2.dao.CidadeDao;
 import ps2.entidade.Cidade;
+import ps2.entidade.Empresa;
 
 @Path("/cidades")
 @Produces(MediaType.APPLICATION_JSON)

@@ -22,6 +22,7 @@ public class CampeonatoDao {
     private final static String sqlU = "UPDATE campeonatos SET nome=? WHERE id=?";
     private final static String sqlD = "DELETE FROM campeonatos WHERE id=?";
     private final static String sqlRById = "SELECT * FROM campeonatos WHERE id=?";
+
     
     private PreparedStatement stmC;
     private PreparedStatement stmR;
