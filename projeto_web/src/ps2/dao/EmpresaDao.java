@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 import ps2.conexao.ConexaoException;
 import ps2.conexao.ConexaoJavaDb;
+import ps2.entidade.Empregado;
 import ps2.entidade.Empresa;
 
 public class EmpresaDao {
@@ -114,5 +115,23 @@ public class EmpresaDao {
             throw new DaoException("Falha ao buscar pelo id: " + ex.getMessage());
         }
         return e;
+    }
+
+    public List<Empregado> readEmpregados(long id_emp) throws DaoException {
+        List<Empregado> empregados = new ArrayList<>();
+        try {
+            stmR.setLong(1, id_emp);
+            ResultSet rs = stmR.executeQuery();
+            while (rs.next()) {
+                String nome = rs.getString("nome");
+                Empregado t = new Empregado(nome);
+                empregados.add(t);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DaoException("Falha ao ler registros: " + ex.getMessage());
+        }
+        return empregados;
     }
 }

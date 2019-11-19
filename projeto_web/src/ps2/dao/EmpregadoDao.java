@@ -10,11 +10,13 @@ public class EmpregadoDao {
 
     private final static String sqlC = "INSERT INTO empregados (id_emp, nome_empregado) VALUES (?,?)";
     private final static String sqlR = "SELECT * FROM empregados";
+    private final static String sqlI = "SELECT E.NOME_EMPREGADO FROM EMPREGADOS E, EMPRESAS EMP WHERE 1=1 AND E.ID_EMPREGADO = EMP.ID_EMP AND E.ID_EMP = ?";
     private final static String sqlU = "UPDATE empregados SET id_emp=?, nome_empregado=? WHERE id_empregado=?";
     private final static String sqlD = "DELETE FROM empregados WHERE id_empregado=?";
     private final static String sqlRById = "SELECT * FROM empregados WHERE id_empregado=?";
     private PreparedStatement stmC;
     private PreparedStatement stmR;
+    private PreparedStatement stmI;
     private PreparedStatement stmU;
     private PreparedStatement stmD;
     private PreparedStatement stmRById;
@@ -24,6 +26,7 @@ public class EmpregadoDao {
             Connection con = conexao.getConnection();
             stmC = con.prepareStatement(sqlC, Statement.RETURN_GENERATED_KEYS);
             stmR = con.prepareStatement(sqlR);
+            stmI = con.prepareStatement(sqlI);
             stmU = con.prepareStatement(sqlU);
             stmD = con.prepareStatement(sqlD);
             stmRById = con.prepareStatement(sqlRById);
@@ -120,5 +123,23 @@ public class EmpregadoDao {
             throw new DaoException("Falha ao buscar pelo id: " + ex.getMessage());
         }
         return e;
+    }
+
+    public List<Empregado> readEmpregados(long id_emp) throws DaoException {
+        List<Empregado> empregados = new ArrayList<>();
+        try {
+            stmR.setLong(1, id_emp);
+            ResultSet rs = stmR.executeQuery();
+            while (rs.next()) {
+                String nome = rs.getString("nome");
+                Empregado t = new Empregado(nome);
+                empregados.add(t);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DaoException("Falha ao ler registros: " + ex.getMessage());
+        }
+        return empregados;
     }
 }

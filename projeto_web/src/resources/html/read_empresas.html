@@ -1,133 +1,135 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Empresas</title>
-        <meta charset="UTF-8">
-                <link rel="stylesheet" href="/site/sakura.css">
-                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    </head>
-    <body>
 
-                    <!-- Modal -->
+<head>
+    <title>Empresas</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/site/sakura.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Modal -->
     <div id="meuModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
- 
-        <!-- Conteúdo do modal-->
-        <div class="modal-content">
- 
-          <!-- Cabeçalho do modal -->
-          <div class="modal-header">
-            <h1 class="modal-title">Atualizar Empresa</h1>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
- 
-          <!-- Corpo do modal -->
-          <div class="modal-body">
-        <table>
-            <tr>
-            </tr>
-                <td>ID:</td>
-                <td id="idEmpresa"></td>
-            <tr>
-                <td>Nome:</td>
-                <td><input type="text" id="txtNome"></td>
-            </tr>
-        </table>
-          </div>
- 
-          <!-- Rodapé do modal-->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary" onclick="atualizarEmpresa()" data-dismiss="modal">Salvar Alterações</button>
-          </div>
- 
+        <div class="modal-dialog">
+
+            <!-- Conteúdo do modal-->
+            <div class="modal-content">
+
+                <!-- Cabeçalho do modal -->
+                <div class="modal-header">
+                    <h1 class="modal-title">Atualizar Empresa</h1>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Corpo do modal -->
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                        </tr>
+                        <td>ID:</td>
+                        <td id="idEmpresa"></td>
+                        <tr>
+                            <td>Nome:</td>
+                            <td><input type="text" id="txtNome"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Rodapé do modal-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="atualizarEmpresa()"
+                        data-dismiss="modal">Salvar Alterações</button>
+                </div>
+
+            </div>
         </div>
-      </div>
     </div>
-<div class="d-inline-flex p-2">
-                <h1>Empresa</h1>
+    <div class="d-inline-flex p-2">
+        <h1>Empresa</h1>
 
-                <a class="large material-icons" href="/site/adicionarEmpresa.html">add_box</a>
-</div>
+        <a class="large material-icons" href="/site/adicionarEmpresa.html">add_box</a>
+    </div>
 
 
-                
-                <p style="font-weight:bold" id="mensagem"></p>
-        <div class="table-responsive-lg">
-                <table class="table">
+
+    <p style="font-weight:bold" id="mensagem"></p>
+    <div class="table-responsive-lg">
+        <table class="table">
             <tr>
                 <th>ID</th>
-                                <th>Nome</th>
-                                <th>Ações</th>
-                        </tr>
-                        <tr>
-                                <td id ="idEmpresa"></td>
-                                <td id="txtNome"></td>
-                        </tr>
-                <tbody id="empresas">
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+            <tr>
+                <td id="idEmpresa"></td>
+                <td id="txtNome"></td>
+            </tr>
+            <tbody id="empresas">
             </tbody>
         </table>
-                </div>
-        <script>
-            const corpoTabela = document.querySelector('#empresas');
-const paragrafoMensagem = document.querySelector('#mensagem');
-const textoNome = document.querySelector('#txtNome');
-const celulaID = document.querySelector('#idEmpresa');
+    </div>
+    <script>
+        const corpoTabela = document.querySelector('#empresas');
+        const paragrafoMensagem = document.querySelector('#mensagem');
+        const textoNome = document.querySelector('#txtNome');
+        const celulaID = document.querySelector('#idEmpresa');
 
-var empresas = [];
+        var empresas = [];
 
-function inicializar() {
-    celulaID.innerHTML = '';
-    textoNome.value = '';
-    listarTodosEmpresas();
-}
+        function inicializar() {
+            celulaID.innerHTML = '';
+            textoNome.value = '';
+            listarTodosEmpresas();
+        }
 
-function selecionarEmpresa(pos) {
-    celulaID.innerHTML = empresas[pos].id;
-    textoNome.value = empresas[pos].nome;
-}
+        function selecionarEmpresa(pos) {
+            celulaID.innerHTML = empresas[pos].id;
+            textoNome.value = empresas[pos].nome;
+        }
 
-
-
-function preencherTabela(camp) {
-    empresas = camp;
-    var linhasTabela = '';
-    var n = empresas.length;
-    for (var i = 0; i < n; i++) {
-        var empresa = empresas[i];
-        linhasTabela +=
-                `<tr><td>`
-        + empresa.id + '</td>' +
-        '<td>' + empresa.nome + '</td>' +
-        `<td>
+        function preencherTabela(camp) {
+            empresas = camp;
+            var linhasTabela = '';
+            var n = empresas.length;
+            for (var i = 0; i < n; i++) {
+                var empresa = empresas[i];
+                linhasTabela +=
+                    `<tr><td>` +
+                    empresa.id + '</td>' +
+                    '<td>' + empresa.nome + '</td>' +
+                    `<td>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpresa(${i})">Visualizar Funcionarios</button>
                 <button type="button" class="btn btn-success " data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpresa(${i})">Adicionar Funcionarios</button>
                 <button type="button" class="btn btn-success " data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpresa(${i})">Editar</button>
-        <button type="button" class="btn btn-danger" onclick="apagarEmpresa(${empresa.id})">Excluir Empresa</button>
+                <button type="button" class="btn btn-danger" onclick="apagarEmpresa(${empresa.id})">Excluir Empresa</button>
                 </td></tr>\n`;
-    }
-    corpoTabela.innerHTML = linhasTabela;
-}
-
-async function listarTodosEmpresas() {
-    const URL = `/api/empresas`;
-          try {
-            fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
-          } catch (e) {
-            corpoTabela.innerHTML = e;
-          }
+            }
+            corpoTabela.innerHTML = linhasTabela;
         }
-inicializar();
+
+        async function listarTodosEmpresas() {
+            const URL = `/api/empresas`;
+            try {
+                fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
+            } catch (e) {
+                corpoTabela.innerHTML = e;
+            }
+        }
+        inicializar();
 
 
-       async function apagarEmpresa(id) {
+        async function apagarEmpresa(id) {
             celulaID.innerHTML = id;
             const ID = celulaID.innerHTML;
             const URL = `/api/empresas/${ID}`;
-            const deleteRequest =    {
-                                        method:'DELETE'
-                                     };
+            const deleteRequest = {
+                method: 'DELETE'
+            };
             try {
                 fetch(URL, deleteRequest).then(resposta => inicializar());
             } catch (e) {
@@ -140,25 +142,34 @@ inicializar();
             const ID = celulaID.innerHTML;
             const URL = `/api/empresas/${ID}`;
             const dadosEmpresa = {
-                                       'id': ID,
-                                       'nome': textoNome.value
-                                   };
-            const putRequest =    {
-                                        method:'PUT',
-                                        body: JSON.stringify(dadosEmpresa),
-                                        headers: { 'Content-type': 'application/json;charset=UTF-8' }
-                                   };
+                'id': ID,
+                'nome': textoNome.value
+            };
+            const putRequest = {
+                method: 'PUT',
+                body: JSON.stringify(dadosEmpresa),
+                headers: {
+                    'Content-type': 'application/json;charset=UTF-8'
+                }
+            };
             try {
                 fetch(URL, putRequest).then(resposta => resposta.json()).then(jsonResponse => inicializar());
             } catch (e) {
                 corpoTabela.innerHTML = e;
             }
         }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js">
+    </script>
+</body>
 
-        </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-    </body>
 </html>

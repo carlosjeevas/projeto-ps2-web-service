@@ -19,9 +19,9 @@ import ps2.dao.CidadeDao;
 import ps2.rest.BairroResource;
 import ps2.rest.CidadeResource;
 
-public class FaculdadeApp extends Application<Configuration> {
+public class ProjetoApp extends Application<Configuration> {
     public static void main(String[] args) throws Exception {
-        new FaculdadeApp().run(new String[] { "server" });
+        new ProjetoApp().run(new String[] { "server" });
     }
 
     @Override
