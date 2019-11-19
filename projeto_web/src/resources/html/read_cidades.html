@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Campeonatos</title>
+		<title>Cidades</title>
 		<meta charset="UTF-8">
                 <link rel="stylesheet" href="/site/sakura.css">
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -18,7 +18,7 @@
  
           <!-- Cabeçalho do modal -->
           <div class="modal-header">
-            <h1 class="modal-title">Atualizar Campeonato</h1>
+            <h1 class="modal-title">Atualizar Cidade</h1>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
  
@@ -28,10 +28,14 @@
             <tr>
             </tr>
                 <td>ID:</td>
-                <td id="idCampeonato"></td>
+                <td id="idCidade"></td>
             <tr>
                 <td>Nome:</td>
                 <td><input type="text" id="txtNome"></td>
+            </tr>
+            <tr>
+                <td>Estado:</td>
+                <td><input type="text" id="txtEstado"></td>
             </tr>
         </table>
           </div>
@@ -39,16 +43,16 @@
           <!-- Rodapé do modal-->
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary" onclick="atualizarCampeonato()" data-dismiss="modal">Salvar Alterações</button>
+            <button type="button" class="btn btn-primary" onclick="atualizarCidade()" data-dismiss="modal">Salvar Alterações</button>
           </div>
  
         </div>
       </div>
     </div>
 <div class="d-inline-flex p-2">
-                <h1>Campeonato</h1>
+                <h1>Cidade</h1>
 
-                <a class="large material-icons" href="/site/adicionarCampeonatos.html">add_box</a>
+                <a class="large material-icons" href="/site/adicionarCidade.html">add_box</a>
 </div>
 
 
@@ -59,59 +63,63 @@
 			<tr>
 				<th>ID</th>
                                 <th>Nome</th>
+                                <th>Estado</th>
                                 <th>Ações</th>
                         </tr>
                         <tr>
-                                <td id ="idCampeonato"></td>
+                                <td id ="idCidade"></td>
                                 <td id="txtNome"></td>
+                                <td id="txtEstado"></td>
                         </tr>
-				<tbody id="campeonatos">
+				<tbody id="cidades">
 			</tbody>
 		</table>
                 </div>
 		<script>
-			const corpoTabela = document.querySelector('#campeonatos');
+			const corpoTabela = document.querySelector('#cidades');
 const paragrafoMensagem = document.querySelector('#mensagem');
 const textoNome = document.querySelector('#txtNome');
-const celulaID = document.querySelector('#idCampeonato');
+const textoEstado = document.querySelector('#txtEstado');
+const celulaID = document.querySelector('#idCidade');
 
-var campeonatos = [];
+var cidades = [];
 
 function inicializar() {
 	celulaID.innerHTML = '';
 	textoNome.value = '';
-	listarTodosCampeonatos();
+        textoEstado.value = '';
+	listarTodosCidades();
 }
 
-function selecionarCampeonato(pos) {
-	celulaID.innerHTML = campeonatos[pos].id;
-	textoNome.value = campeonatos[pos].nome;
+function selecionarCidade(pos) {
+	celulaID.innerHTML = cidades[pos].id;
+	textoNome.value = cidades[pos].nome;
+        textoEstado.value = cidades[pos].estado;
 }
 
 
 
 function preencherTabela(camp) {
-	campeonatos = camp;
+	cidades = camp;
 	var linhasTabela = '';
-	var n = campeonatos.length;
+	var n = cidades.length;
 	for (var i = 0; i < n; i++) {
-		var campeonato = campeonatos[i];
+		var cidade = cidades[i];
 		linhasTabela +=
                 `<tr><td>`
-		+ campeonato.id + '</td>' +
-		'<td>' + campeonato.nome + '</td>' +
+		+ cidade.id + '</td>' +
+		'<td>' + cidade.nome + '</td>' +
+                '<td>' + cidade.estado + '</td>' +
 		`<td>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#meuModal" onclick="selecionarCampeonato(${i})">Visualizar Times</button>
-                <button type="button" class="btn btn-success " data-toggle="modal" data-target="#meuModal" onclick="selecionarCampeonato(${i})">Adicionar Time</button>
-                <button type="button" class="btn btn-success " data-toggle="modal" data-target="#meuModal" onclick="selecionarCampeonato(${i})">Editar</button>
-		<button type="button" class="btn btn-danger" onclick="apagarCampeonato(${campeonato.id})">Excluir Campeonato</button>
+                <button type="button" class="btn btn-success " data-toggle="modal" data-target="#meuModal" onclick="selecionarCidade(${i})">Editar</button>
+		<button type="button" class="btn btn-danger" onclick="apagarCidade(${cidade.id})">Excluir Cidade</button>
                 </td></tr>\n`;
 	}
 	corpoTabela.innerHTML = linhasTabela;
 }
 
-async function listarTodosCampeonatos() {
-	const URL = `/api/campeonatos`;
+async function listarTodosCidades() {
+	const URL = `/api/cidades`;
           try {
             fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
           } catch (e) {
@@ -121,10 +129,10 @@ async function listarTodosCampeonatos() {
 inicializar();
 
 
-       async function apagarCampeonato(id) {
+       async function apagarCidade(id) {
             celulaID.innerHTML = id;
             const ID = celulaID.innerHTML;
-            const URL = `/api/campeonatos/${ID}`;
+            const URL = `/api/cidades/${ID}`;
             const deleteRequest =    {
                                         method:'DELETE'
                                      };
@@ -135,17 +143,18 @@ inicializar();
             }
         }
 
-        async function atualizarCampeonato() {
+        async function atualizarCidade() {
             if (celulaID.innerHTML == '') return;
             const ID = celulaID.innerHTML;
-            const URL = `/api/campeonatos/${ID}`;
-            const dadosCampeonato = {
+            const URL = `/api/cidades/${ID}`;
+            const dadosCidade = {
                                        'id': ID,
-                                       'nome': textoNome.value
+                                       'nome': textoNome.value,
+                                       'estado': textoEstado.value
                                    };
             const putRequest =    {
                                         method:'PUT',
-                                        body: JSON.stringify(dadosCampeonato),
+                                        body: JSON.stringify(dadosCidade),
                                         headers: { 'Content-type': 'application/json;charset=UTF-8' }
                                    };
             try {

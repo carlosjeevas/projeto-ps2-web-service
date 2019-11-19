@@ -5,19 +5,16 @@ import java.util.*;
 import ps2.conexao.ConexaoException;
 import ps2.conexao.ConexaoJavaDb;
 import ps2.entidade.Empresa;
-import ps2.entidade.Empregado;
 
 public class EmpresaDao {
 
     private final static String sqlC = "INSERT INTO empresas (nome) VALUES (?)";
     private final static String sqlR = "SELECT * FROM empresas";
-    private final static String sqlI = "SELECT E.NOME_EMPREGADO FROM EMPREGADOS E, EMPRESAS EMP WHERE 1=1 AND E.ID_EMPREGADO = EMP.ID_EMP AND E.ID_EMP = ?";
     private final static String sqlU = "UPDATE empresas SET nome=? WHERE id_emp=?";
     private final static String sqlD = "DELETE FROM empresas WHERE id_emp=?";
-    private final String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";
+    private final static String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";
     private PreparedStatement stmC;
     private PreparedStatement stmR;
-    private PreparedStatement stmI;
     private PreparedStatement stmU;
     private PreparedStatement stmD;
     private PreparedStatement stmRById;
@@ -27,7 +24,6 @@ public class EmpresaDao {
             Connection con = conexao.getConnection();
             stmC = con.prepareStatement(sqlC, Statement.RETURN_GENERATED_KEYS);
             stmR = con.prepareStatement(sqlR);
-            stmI = con.prepareStatement(sqlI);
             stmU = con.prepareStatement(sqlU);
             stmD = con.prepareStatement(sqlD);
             stmRById = con.prepareStatement(sqlRById);
@@ -37,20 +33,20 @@ public class EmpresaDao {
         }
     }
 
-    public long create(Empresa t) throws DaoException {
-        long id = 0;
+    public long create(Empresa e) throws DaoException {
+        long id_emp = 0;
         try {
-            stmC.setString(1, t.getNome());
+            stmC.setString(1, e.getNome());
             int r = stmC.executeUpdate();
             ResultSet rs = stmC.getGeneratedKeys();
             if (rs.next()) {
-                id = rs.getLong(1);
+                id_emp = rs.getLong(1);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DaoException("Falha ao criar registro: " + ex.getMessage());
         }
-        return id;
+        return id_emp;
     }
 
     public List<Empresa> read() throws DaoException {
@@ -58,10 +54,10 @@ public class EmpresaDao {
         try {
             ResultSet rs = stmR.executeQuery();
             while (rs.next()) {
-                long id = rs.getLong("id_emp");
+                long id_emp = rs.getLong("id_emp");
                 String nome = rs.getString("nome");
-                Empresa t = new Empresa(id, nome);
-                empresas.add(t);
+                Empresa e = new Empresa(id_emp, nome);
+                empresas.add(e);
             }
             rs.close();
         } catch (SQLException ex) {
@@ -71,10 +67,10 @@ public class EmpresaDao {
         return empresas;
     }
 
-    public void update(Empresa t) throws DaoException {
+    public void update(Empresa e) throws DaoException {
         try {
-            stmU.setString(1, t.getNome());
-            stmU.setLong(2, t.getId());
+            stmU.setString(1, e.getNome());
+            stmU.setLong(2, e.getId());
             int r = stmU.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -82,9 +78,9 @@ public class EmpresaDao {
         }
     }
 
-    public void delete(long id) throws DaoException {
+    public void delete(long id_emp) throws DaoException {
         try {
-            stmD.setLong(1, id);
+            stmD.setLong(1, id_emp);
             int r = stmD.executeUpdate();
         } catch (SQLException ex) {
             throw new DaoException("Falha ao apagar registro: " + ex.getMessage());
@@ -103,38 +99,20 @@ public class EmpresaDao {
         }
     }
 
-    public Empresa readById(long id) throws DaoException {
-        Empresa t = null;
+    public Empresa readById(long id_emp) throws DaoException {
+        Empresa e = null;
 
         try {
-            stmRById.setLong(1, id);
+            stmRById.setLong(1, id_emp);
             ResultSet rs = stmRById.executeQuery();
             if (rs.next()) {
                 String nome = rs.getString("nome");
-                t = new Empresa(id, nome);
+                e = new Empresa(id_emp, nome);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DaoException("Falha ao buscar pelo id: " + ex.getMessage());
         }
-        return t;
-    }
-    
-        public List<Empregado> readEmpregados(long id_emp) throws DaoException {
-        List<Empregado> empregados = new ArrayList<>();
-        try {
-            stmR.setLong(1, id_emp);
-            ResultSet rs = stmR.executeQuery();
-            while (rs.next()) {
-                String nome = rs.getString("nome");
-                Empregado t = new Empregado(nome);
-                empregados.add(t);
-            }
-            rs.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DaoException("Falha ao ler registros: " + ex.getMessage());
-        }
-        return empregados;
+        return e;
     }
 }

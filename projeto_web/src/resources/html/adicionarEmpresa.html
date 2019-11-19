@@ -5,14 +5,16 @@
     <head>
         <title>Empresa</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-        <script src="./css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/site/sakura.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
 
     <body>
-        <p><a href="/site">&lt; Voltar para página inicial</a></p>
+        <p><a href="/site/read_empresas.html">&lt; Voltar para principal</a></p>
+<div class="d-flex justify-content-center">
         <h1>Adicionar Empresa</h1>
-
+</div>
+        <div class="d-flex justify-content-center">
         <table>    
             <tr>
                 <td>Nome:</td>
@@ -20,15 +22,16 @@
             </tr>
             <tr><td></td><td><input type="button" onclick="criarEmpresa()" value="Criar"></td></tr>
         </table>
+            </div>
         <p style="font-weight:bold" id="mensagem"></p>
-        
+
     <script>
         const textoNome = document.querySelector('#txtNome');
         const paragrafoMensagem = document.querySelector('#mensagem');
         
         function mostrarMensagem(empresaCadastrado) {
             textoNome.value = '';
-            paragrafoMensagem.innerHTML = 'Campeonato foi criado com id ' + empresaCadastrado.id_emp;
+            paragrafoMensagem.innerHTML = 'Empresa foi criado com id ' + empresaCadastrado.id;
         }
 
         async function criarEmpresa() {

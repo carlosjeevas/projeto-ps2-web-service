@@ -5,10 +5,9 @@
 		<meta charset="UTF-8">
                 <link rel="stylesheet" href="/site/sakura.css">
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	</head>
 	<body>
-                <a href="/site/adicionarTime.html"><button class="btn btn-primary btn-lg mt-1 ml-2">+ Novo</button></a> 
-		<p><a href="/site">&lt; Voltar para página inicial</a></p>
                     <!-- Modal -->
     <div id="meuModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -57,28 +56,33 @@
         </div>
       </div>
     </div>
-                
-                
-                
+<div class="d-inline-flex p-2">
                 <h1>Times</h1>
+
+                <a class="large material-icons" href="/site/adicionarTime.html">add_box</a>
+</div>
 		<p style="font-weight:bold" id="mensagem"></p>
-		<table>
+		<div class="table-responsive-lg">
+                <table class="table">
 			<tr>
 				<th>ID</th>
-                                <td id ="idTime"></td>
-				<th>Nome</th>
-                                <td id="txtNome"></td>
+                                <th>Nome</th>
                                 <th>Ano de Fundação</th>
-                                <td id="txtAnoFundacao"></td>
                                 <th>Cidade</th>
-                                <td id="txtCidade"></td>
                                 <th>Estado</th>
+                                <th>Ações</th>
+                        </tr>
+                        <tr>
+                                <td id ="idTime"></td>
+                                <td id="txtNome"></td>
+                                <td id="txtAnoFundacao"></td>                               
+                                <td id="txtCidade"></td>
                                 <td id="txtEstado"></td>
-				<th>Ações</th>
 			</tr>
 				<tbody id="times">
 			</tbody>
 		</table>
+                </div>
 		<script>
 			const corpoTabela = document.querySelector('#times');
 const paragrafoMensagem = document.querySelector('#mensagem');
@@ -123,8 +127,10 @@ function preencherTabela(tim) {
                 '<td>' + time.anoFundacao + '</td>' +
                 '<td>' + time.cidade + '</td>' +
                 '<td>' + time.estado + '</td>' +
-		`<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarTime(${i})">Editar</button></td>` +
-		`<td><button class="btn btn-danger btn-lg mt-2 ml-2" onclick="apagarTime(${time.id})">Excluir Time</button></td></tr>\n`;
+		`<td>
+                  <button type="button" class="btn btn-success p-2 bd-highlight data-toggle="modal" data-target="#meuModal" onclick="selecionarTime(${i})">Editar</button>  
+                  <button class="btn btn-danger p-2 bd-highlight" onclick="apagarTime(${time.id})">Excluir Time</button>\n\
+                  </td></tr>\n`;
 	}
 	corpoTabela.innerHTML = linhasTabela;
 }

@@ -3,64 +3,62 @@
     <html>
 
     <head>
-        <title>Campeonato</title>
+        <title>Empregado</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="./css/bootstrap-4.3.1-dist/css/bootstrap.min.css">
-        <script src="css/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/site/sakura.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
 
     <body>
-        <p><a href="/site">&lt; Voltar para página inicial</a></p>
+        <p><a href="/site/read_empregados.html">&lt; Voltar para principal</a></p>
+<div class="d-flex justify-content-center">
         <h1>Adicionar Empregado</h1>
-
-        <table>
+</div>
+        <div class="d-flex justify-content-center">
+        <table>    
+            <tr>
+                <td>ID Empresa:</td>
+                <td><input type="text" id="txtIdempresa"></td>
+            </tr>
             <tr>
                 <td>Nome:</td>
                 <td><input type="text" id="txtNome"></td>
             </tr>
-            <tr>
-                <td>ID Empresa:</td>
-                <td><input type="text" id="txtIdEmp"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="button" onclick="criarEmpregado()" value="Criar"></td>
-            </tr>
+            <tr><td></td><td><input type="button" onclick="criarEmpregado()" value="Criar"></td></tr>
         </table>
+            </div>
         <p style="font-weight:bold" id="mensagem"></p>
 
-        <script>
-            const textoNome = document.querySelector('#txtNome');
-            const textoIdEmp = document.querySelector('#txtIdEmp');
-            const paragrafoMensagem = document.querySelector('#mensagem');
+    <script>
+        const textoIdempresa = document.querySelector('#txtIdempresa');
+        const textoNome = document.querySelector('#txtNome');
+        const paragrafoMensagem = document.querySelector('#mensagem');
+        
+        function mostrarMensagem(empregadoCadastrado) {
+            textoIdempresa.value = '';
+            textoNome.value = '';
+            paragrafoMensagem.innerHTML = 'Empregado foi criado com id ' + empregadoCadastrado.id;
+        }
 
-            function mostrarMensagem(empregadosCadastrados) {
-                textoNome.value = '';
-                textoIdEmp.value = '';
-                paragrafoMensagem.innerHTML = 'Empregado foi criado com id ' + empregadosCadastrados.id;
+        async function criarEmpregado() {
+            const URL = `/api/empregados`;
+            const dadosEmpregado = {
+                                       'id_emp': textoIdempresa.value,
+                                       'nome': textoNome.value
+                                   };
+            const postRequest =    {
+                                        method:'POST',
+                                        body: JSON.stringify(dadosEmpregado),
+                                        headers: { 'Content-type': 'application/json;charset=UTF-8' }
+                                   };
+            try {
+                fetch(URL, postRequest).then(resposta => resposta.json()).then(jsonResponse => mostrarMensagem(jsonResponse));
+            } catch (e) {
+                corpoTabela.innerHTML = e;
             }
+        }
 
-            async function criarEmpregado() {
-                const URL = `/api/empregados`;
-                const dadosEmpregado = {
-                    'id_emp': textoIdEmp.value,
-                    'nome': textoNome.value
-                };
-                const postRequest = {
-                    method: 'POST',
-                    body: JSON.stringify(dadosEmpregado),
-                    headers: {
-                        'Content-type': 'application/json;charset=UTF-8'
-                    }
-                };
-                try {
-                    fetch(URL, postRequest).then(resposta => resposta.json()).then(jsonResponse => mostrarMensagem(
-                        jsonResponse));
-                } catch (e) {
-                    corpoTabela.innerHTML = e;
-                }
-            }
-        </script>
+    </script>
     </body>
 
     </html>

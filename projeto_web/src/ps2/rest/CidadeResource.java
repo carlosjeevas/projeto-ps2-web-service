@@ -9,7 +9,6 @@ import io.dropwizard.jersey.params.*;
 import java.util.*;
 import ps2.dao.CidadeDao;
 import ps2.entidade.Cidade;
-import ps2.entidade.Empresa;
 
 @Path("/cidades")
 @Produces(MediaType.APPLICATION_JSON)
@@ -50,8 +49,8 @@ public class CidadeResource {
     }
 
     @PUT
-    @Path("{id}")
-    public Cidade update(@PathParam("id") LongParam id, Cidade ci) {
+    @Path("{id_cidade}")
+    public Cidade update(@PathParam("id_cidade") LongParam id, Cidade ci) {
         Cidade resp;
         try {
             ci.setId(id.get());
@@ -65,8 +64,8 @@ public class CidadeResource {
     }
 
     @DELETE
-    @Path("{id}")
-    public Response delete(@PathParam("id") LongParam id) {
+    @Path("{id_cidade}")
+    public Response delete(@PathParam("id_cidade") LongParam id) {
         Cidade ci;
         try {
             ci = dao.readById(id.get());

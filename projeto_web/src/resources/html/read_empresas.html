@@ -1,19 +1,14 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Empresas</title>
-		<meta charset="UTF-8">
+    <head>
+        <title>Empresas</title>
+        <meta charset="UTF-8">
                 <link rel="stylesheet" href="/site/sakura.css">
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-                <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
-                <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js">
-                <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js">
-                <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
-  
-	</head>
-	<body>
-                <a href="/site/adicionarEmpresa.html"><button class="btn btn-primary btn-lg mt-1 ml-2">+ Novo</button></a> 
-		<p><a href="/site">&lt; Voltar para página inicial</a></p>
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+
                     <!-- Modal -->
     <div id="meuModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -29,7 +24,7 @@
  
           <!-- Corpo do modal -->
           <div class="modal-body">
-        <table>    
+        <table>
             <tr>
             </tr>
                 <td>ID:</td>
@@ -50,24 +45,32 @@
         </div>
       </div>
     </div>
-                
-                
-                
+<div class="d-inline-flex p-2">
                 <h1>Empresa</h1>
-		<p style="font-weight:bold" id="mensagem"></p>
-		<table id="example" class="display" style="width:100%">
-			<tr>
-				<th>ID</th>
+
+                <a class="large material-icons" href="/site/adicionarEmpresa.html">add_box</a>
+</div>
+
+
+                
+                <p style="font-weight:bold" id="mensagem"></p>
+        <div class="table-responsive-lg">
+                <table class="table">
+            <tr>
+                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Ações</th>
+                        </tr>
+                        <tr>
                                 <td id ="idEmpresa"></td>
-				<th>Nome</th>
                                 <td id="txtNome"></td>
-				<th>Ações</th>
-			</tr>
-				<tbody id="empresas">
-			</tbody>
-		</table>
-		<script>
-			const corpoTabela = document.querySelector('#empresas');
+                        </tr>
+                <tbody id="empresas">
+            </tbody>
+        </table>
+                </div>
+        <script>
+            const corpoTabela = document.querySelector('#empresas');
 const paragrafoMensagem = document.querySelector('#mensagem');
 const textoNome = document.querySelector('#txtNome');
 const celulaID = document.querySelector('#idEmpresa');
@@ -75,36 +78,40 @@ const celulaID = document.querySelector('#idEmpresa');
 var empresas = [];
 
 function inicializar() {
-	celulaID.innerHTML = '';
-	textoNome.value = '';
-	listarTodosEmpresas();
+    celulaID.innerHTML = '';
+    textoNome.value = '';
+    listarTodosEmpresas();
 }
 
 function selecionarEmpresa(pos) {
-	celulaID.innerHTML = empresas[pos].id;
-	textoNome.value = empresas[pos].nome;
+    celulaID.innerHTML = empresas[pos].id;
+    textoNome.value = empresas[pos].nome;
 }
 
 
 
-function preencherTabela(emp) {
-	empresas = emp;
-	var linhasTabela = '';
-	var n = empresas.length;
-	for (var i = 0; i < n; i++) {
-		var empresa = empresas[i];
-		linhasTabela +=
-		`<tr><td>`
-		+ empresa.id + '</a></td>' +
-		'<td>' + empresa.nome + '</td>' +
-		`<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpresa(${i})">Editar</button></td>` +
-		`<td><button class="btn btn-danger btn-lg mt-2 ml-2" onclick="apagarEmpresa(${empresa.id})">Excluir</button></td></tr>\n`;
-	}
-	corpoTabela.innerHTML = linhasTabela;
+function preencherTabela(camp) {
+    empresas = camp;
+    var linhasTabela = '';
+    var n = empresas.length;
+    for (var i = 0; i < n; i++) {
+        var empresa = empresas[i];
+        linhasTabela +=
+                `<tr><td>`
+        + empresa.id + '</td>' +
+        '<td>' + empresa.nome + '</td>' +
+        `<td>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpresa(${i})">Visualizar Funcionarios</button>
+                <button type="button" class="btn btn-success " data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpresa(${i})">Adicionar Funcionarios</button>
+                <button type="button" class="btn btn-success " data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpresa(${i})">Editar</button>
+        <button type="button" class="btn btn-danger" onclick="apagarEmpresa(${empresa.id})">Excluir Empresa</button>
+                </td></tr>\n`;
+    }
+    corpoTabela.innerHTML = linhasTabela;
 }
 
 async function listarTodosEmpresas() {
-	const URL = `/api/empresas`;
+    const URL = `/api/empresas`;
           try {
             fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
           } catch (e) {
@@ -133,8 +140,8 @@ inicializar();
             const ID = celulaID.innerHTML;
             const URL = `/api/empresas/${ID}`;
             const dadosEmpresa = {
-                                       'nome': textoNome.value,
-                                       'id': ID
+                                       'id': ID,
+                                       'nome': textoNome.value
                                    };
             const putRequest =    {
                                         method:'PUT',
@@ -148,10 +155,10 @@ inicializar();
             }
         }
 
-		</script>
+        </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-	</body>
+    </body>
 </html>

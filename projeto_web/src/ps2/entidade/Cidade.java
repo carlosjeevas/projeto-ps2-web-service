@@ -6,7 +6,7 @@ public class Cidade {
     private String nome;
     private String estado;
     
-    public Cidade(){}
+    public Cidade () {}
 
     public Cidade(long id, String nome, String estado) {
         this.id = id;

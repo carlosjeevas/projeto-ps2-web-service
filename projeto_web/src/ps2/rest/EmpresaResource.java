@@ -1,12 +1,12 @@
 package ps2.rest;
 
 import ps2.dao.DaoException;
+import ps2.dao.EmpresaDao;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import io.dropwizard.jersey.*;
 import io.dropwizard.jersey.params.*;
 import java.util.*;
-import ps2.dao.EmpresaDao;
-import ps2.entidade.Empregado;
 import ps2.entidade.Empresa;
 
 @Path("/empresas")
@@ -22,12 +22,12 @@ public class EmpresaResource {
     }
 
     @POST
-    public Empresa create(Empresa c) {
+    public Empresa create(Empresa e) {
         Empresa resp;
         try {
-            long id = dao.create(c);
-            c.setId(id);
-            resp = c;
+            long id_emp = dao.create(e);
+            e.setId(id_emp);
+            resp = e;
         } catch (DaoException ex) {
             ex.printStackTrace();
             resp = null;
@@ -37,65 +37,52 @@ public class EmpresaResource {
 
     @GET
     public List<Empresa> read() {
-        List<Empresa> Empresas;
+        List<Empresa> empresas;
         try {
-            Empresas = dao.read();
+            empresas = dao.read();
         } catch (DaoException ex) {
             ex.printStackTrace();
-            Empresas = null;
+            empresas = null;
         }
-        return Empresas;
-    }
-    
-    @GET
-    @Path("{id_emp}")
-    public List<Empregado> readEmpregado(@PathParam("id_emp") long id_emp) {
-        List<Empregado> empregados;
-        try {
-            empregados = dao.readEmpregados(id_emp);
-        } catch (DaoException ex) {
-            ex.printStackTrace();
-            empregados = null;
-        }
-        return empregados;
+        return empresas;
     }
 
     @PUT
-    @Path("{id}")
-    public Empresa update(@PathParam("id") LongParam id, Empresa c) {
+    @Path("{id_emp}")
+    public Empresa update(@PathParam("id_emp") LongParam id_emp, Empresa e) {
         Empresa resp;
         try {
-            c.setId(id.get());
-            dao.update(c);
-            resp = c;
+            e.setId(id_emp.get());
+            dao.update(e);
+            resp = e;
         } catch (DaoException ex) {
             ex.printStackTrace();
             resp = null;
         }
-        return c;
+        return e;
     }
 
     @DELETE
-    @Path("{id}")
-    public Response delete(@PathParam("id") LongParam id) {
-        Empresa c;
+    @Path("{id_emp}")
+    public Response delete(@PathParam("id_emp") LongParam id_emp) {
+        Empresa e;
         try {
-            c = dao.readById(id.get());
+            e = dao.readById(id_emp.get());
         } catch (DaoException ex) {
             ex.printStackTrace();
             throw new WebApplicationException("Erro ao buscar campenato com id="
-                    + id.get(), 500);
+                    + id_emp.get(), 500);
         }
-        if (c != null) {
+        if (e != null) {
             try {
-                dao.delete(id.get());
+                dao.delete(id_emp.get());
             } catch (DaoException ex) {
                 ex.printStackTrace();
-                throw new WebApplicationException("Erro ao tentar apagar empresa com id="
-                        + id.get(), 500);
+                throw new WebApplicationException("Erro ao tentar apagar Empresa com id="
+                        + id_emp.get(), 500);
             }
         } else {
-            throw new WebApplicationException("Empresa com id=" + id.get()
+            throw new WebApplicationException("Empresa com id=" + id_emp.get()
                     + " não encontrado!", 404);
         }
         return Response.ok().build();
