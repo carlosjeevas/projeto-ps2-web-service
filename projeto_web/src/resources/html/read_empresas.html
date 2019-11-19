@@ -80,6 +80,7 @@
         const celulaID = document.querySelector('#idEmpresa');
 
         var empresas = [];
+        var empregados = [];
 
         function inicializar() {
             celulaID.innerHTML = '';
@@ -90,6 +91,11 @@
         function selecionarEmpresa(pos) {
             celulaID.innerHTML = empresas[pos].id;
             textoNome.value = empresas[pos].nome;
+        }
+
+        function selecionarEmpregados(pos) {
+            celulaID.innerHTML = empregados[pos].id;
+            textoNome.value = empregados[pos].nome;
         }
 
         function preencherTabela(camp) {
@@ -113,6 +119,15 @@
         }
 
         async function listarTodosEmpresas() {
+            const URL = `/api/empresas`;
+            try {
+                fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
+            } catch (e) {
+                corpoTabela.innerHTML = e;
+            }
+        }
+
+        async function listarTodosEmpregados() {
             const URL = `/api/empresas`;
             try {
                 fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
