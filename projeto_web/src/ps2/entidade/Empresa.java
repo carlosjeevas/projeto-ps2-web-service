@@ -6,6 +6,7 @@ public class Empresa {
     private String nome;
 
     public Empresa() {
+
     }
 
     public Empresa(long id_emp, String nome) {

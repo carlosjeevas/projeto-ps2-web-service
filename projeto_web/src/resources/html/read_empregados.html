@@ -88,9 +88,7 @@
       celulaID.innerHTML = Empregados[pos].id;
       textoNome.value = Empregados[pos].nome;
     }
-
-
-
+    
     function preencherTabela(camp) {
       empregados = camp;
       var linhasTabela = '';
@@ -101,8 +99,6 @@
           `<tr><td>` +
           empregado.id + '</a></td>' +
           '<td>' + empregado.nome + '</td>' +
-          `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpregado(${i})">Visualizar Times</button></td>` +
-          `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpregado(${i})">Adicionar Time</button></td>` +
           `<td><button type="button" class="btn btn-success btn-lg mt-2 ml-2" data-toggle="modal" data-target="#meuModal" onclick="selecionarEmpregado(${i})">Editar</button></td>` +
           `<td><button class="btn btn-danger btn-lg mt-2 ml-2" onclick="apagarEmpregado(${empregado.id})">Excluir Empregado</button></td></tr>\n`;
       }

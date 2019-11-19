@@ -6,6 +6,7 @@ import javax.ws.rs.core.*;
 import io.dropwizard.jersey.params.*;
 import java.util.*;
 import ps2.dao.EmpresaDao;
+import ps2.entidade.Empregado;
 import ps2.entidade.Empresa;
 
 @Path("/empresas")
@@ -44,6 +45,19 @@ public class EmpresaResource {
             Empresas = null;
         }
         return Empresas;
+    }
+    
+    @GET
+    @Path("{id}")
+    public List<Empregado> readEmpregado(@PathParam("id") long id_emp) {
+        List<Empregado> empregados;
+        try {
+            empregados = dao.readEmpregados(id_emp);
+        } catch (DaoException ex) {
+            ex.printStackTrace();
+            empregados = null;
+        }
+        return empregados;
     }
 
     @PUT
