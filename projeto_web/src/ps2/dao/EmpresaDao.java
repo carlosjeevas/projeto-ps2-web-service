@@ -11,7 +11,7 @@ public class EmpresaDao {
 
     private final static String sqlC = "INSERT INTO empresas (nome) VALUES (?)";
     private final static String sqlR = "SELECT * FROM empresas";
-    private final static String sqlI = "SELECT E.NOME_EMPREGADO FROM EMPREGADOS E, EMPRESAS EMP WHERE 1=1 AND E.ID_EMPREGADO = EMP.ID_EMP AND E.ID_EMP = ?;";
+    private final static String sqlI = "SELECT E.NOME_EMPREGADO FROM EMPREGADOS E, EMPRESAS EMP WHERE 1=1 AND E.ID_EMPREGADO = EMP.ID_EMP AND E.ID_EMP = ?";
     private final static String sqlU = "UPDATE empresas SET nome=? WHERE id_emp=?";
     private final static String sqlD = "DELETE FROM empresas WHERE id_emp=?";
     private final String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";

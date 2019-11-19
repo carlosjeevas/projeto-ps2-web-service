@@ -48,8 +48,8 @@ public class EmpresaResource {
     }
     
     @GET
-    @Path("{id}")
-    public List<Empregado> readEmpregado(@PathParam("id") long id_emp) {
+    @Path("{id_emp}")
+    public List<Empregado> readEmpregado(@PathParam("id_emp") long id_emp) {
         List<Empregado> empregados;
         try {
             empregados = dao.readEmpregados(id_emp);
