@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bairros</title>
+		<meta charset="UTF-8">
+                <link rel="stylesheet" href="/site/sakura.css">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	</head>
+	<body>
+
+                    <!-- Modal -->
+    <div id="meuModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+ 
+        <!-- Conteúdo do modal-->
+        <div class="modal-content">
+ 
+          <!-- Cabeçalho do modal -->
+          <div class="modal-header">
+            <h1 class="modal-title">Atualizar Bairro</h1>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+ 
+          <!-- Corpo do modal -->
+          <div class="modal-body">
+        <table>
+            <tr>
+                <td>ID:</td>
+                <td id="idBairro"></td>
+            <tr>
+                <td>ID CIDADE:</td>
+                <td><input type="text" id="txtidCidade"></td>
+            </tr>
+            <tr>
+                <td>Nome:</td>
+                <td><input type="text" id="txtNome"></td>
+            </tr>
+        </table>
+          </div>
+ 
+          <!-- Rodapé do modal-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-primary" onclick="atualizarBairro()" data-dismiss="modal">Salvar Alterações</button>
+          </div>
+ 
+        </div>
+      </div>
+    </div>
+<div class="d-inline-flex p-2">
+                <h1>Bairro</h1>
+
+                <a class="large material-icons" href="/site/adicionarBairro.html">add_box</a>
+</div>
+
+
+                
+                <p style="font-weight:bold" id="mensagem"></p>
+		<div class="table-responsive-lg">
+                <table class="table">
+			<tr>
+				<th>ID</th>
+                                <th>ID Cidade</th>
+                                <th>Nome</th>
+                                <th>Ações</th>
+                        </tr>
+                        <tr>
+                                <td id ="idBairro"></td>
+                                <td id ="txtidCidade"></td>
+                                <td id="txtNome"></td>
+                        </tr>
+				<tbody id="bairros">
+			</tbody>
+		</table>
+                </div>
+		<script>
+			const corpoTabela = document.querySelector('#bairros');
+const paragrafoMensagem = document.querySelector('#mensagem');
+const textoidCidade = document.querySelector('#txtidCidade');
+const textoNome = document.querySelector('#txtNome');
+const celulaID = document.querySelector('#idBairro');
+
+var bairros = [];
+
+function inicializar() {
+	celulaID.innerHTML = '';
+        textoidCidade.value = '';
+	textoNome.value = '';
+	listarTodosBairros();
+}
+
+function selecionarBairro(pos) {
+	celulaID.innerHTML = bairros[pos].id;
+        textoidCidade = bairros[pos].id_cid;
+	textoNome.value = bairros[pos].nome;
+}
+
+
+
+function preencherTabela(bair) {
+	bairros = bair;
+	var linhasTabela = '';
+	var n = bairros.length;
+	for (var i = 0; i < n; i++) {
+		var bairro = bairros[i];
+		linhasTabela +=
+                `<tr><td>`
+		+ bairro.id + '</td>' +
+		'<td>' + bairro.id_cid + '</td>' +
+                '<td>' + bairro.nome + '</td>' +
+		`<td>
+                <button type="button" class="btn btn-success " data-toggle="modal" data-target="#meuModal" onclick="selecionarBairro(${i})">Editar</button>
+		<button type="button" class="btn btn-danger" onclick="apagarBairro(${bairro.id})">Excluir Bairro</button>
+                </td></tr>\n`;
+	}
+	corpoTabela.innerHTML = linhasTabela;
+}
+
+async function listarTodosBairros() {
+	const URL = `/api/bairros`;
+          try {
+            fetch(URL).then(resposta => resposta.json()).then(jsonResponse => preencherTabela(jsonResponse));
+          } catch (e) {
+            corpoTabela.innerHTML = e;
+          }
+        }
+inicializar();
+
+
+       async function apagarBairro(id) {
+            celulaID.innerHTML = id;
+            const ID = celulaID.innerHTML;
+            const URL = `/api/bairros/${ID}`;
+            const deleteRequest =    {
+                                        method:'DELETE'
+                                     };
+            try {
+                fetch(URL, deleteRequest).then(resposta => inicializar());
+            } catch (e) {
+                corpoTabela.innerHTML = e;
+            }
+        }
+
+        async function atualizarBairro() {
+            if (celulaID.innerHTML == '') return;
+            const ID = celulaID.innerHTML;
+            const URL = `/api/bairros/${ID}`;
+            const dadosBairro = {
+                                       'id': ID,
+                                       'id_cid': textoidCidade.value,
+                                       'nome': textoNome.value
+                                   };
+            const putRequest =    {
+                                        method:'PUT',
+                                        body: JSON.stringify(dadosBairro),
+                                        headers: { 'Content-type': 'application/json;charset=UTF-8' }
+                                   };
+            try {
+                fetch(URL, putRequest).then(resposta => resposta.json()).then(jsonResponse => inicializar());
+            } catch (e) {
+                corpoTabela.innerHTML = e;
+            }
+        }
+
+		</script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+	</body>
+</html>
