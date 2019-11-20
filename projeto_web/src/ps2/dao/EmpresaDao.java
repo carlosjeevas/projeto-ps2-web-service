@@ -11,7 +11,7 @@ public class EmpresaDao {
 
     private final static String sqlC = "INSERT INTO empresas (nome) VALUES (?)";
     private final static String sqlR = "SELECT * FROM empresas";
-    private final static String sqlI = "SELECT E.NOME_EMPREGADO FROM EMPREGADOS E, EMPRESAS EMP WHERE 1=1 AND E.ID_EMPREGADO = EMP.ID_EMP AND E.ID_EMP = ?";
+    private final static String sqlI = "SELECT E.NOME_EMPREGADO FROM EMPREGADOS E, EMPRESAS EMP WHERE 1=1 AND E.ID_EMP = EMP.ID_EMP AND E.ID_EMP = ?";
     private final static String sqlU = "UPDATE empresas SET nome=? WHERE id_emp=?";
     private final static String sqlD = "DELETE FROM empresas WHERE id_emp=?";
     private final static String sqlRById = "SELECT * FROM empresas WHERE id_emp=?";
@@ -124,10 +124,10 @@ public class EmpresaDao {
         List<Empregado> empregados = new ArrayList<>();
         Empregado t = null;
         try {
-            stmR.setLong(0, id_emp);
-            ResultSet rs = stmR.executeQuery();
+            stmI.setLong(1, id_emp);
+            ResultSet rs = stmI.executeQuery();
             while (rs.next()) {
-                long id = rs.getLong("id");
+                long id = rs.getLong("id_emp");
                 String nome = rs.getString("nome");
                 t = new Empregado(id, nome);
                 empregados.add(t);
