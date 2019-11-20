@@ -72,10 +72,10 @@ public class EmpregadoDao {
 
     public void update(Empregado e) throws DaoException {
         try {
-            stmU.setString(1, e.getNome());
+            stmU.setString(3, e.getNome());
             stmU.setLong(2, e.getId_emp());
-            stmU.setLong(3, e.getId());
-            int r = stmU.executeUpdate();
+            stmU.setLong(1, e.getId());
+            long r = stmU.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DaoException("Falha ao atualizar registro: " + ex.getMessage());
@@ -111,7 +111,7 @@ public class EmpregadoDao {
             ResultSet rs = stmRById.executeQuery();
             if (rs.next()) {
                 long id_emp = rs.getLong("id_emp");
-                String nome = rs.getString("nome");
+                String nome = rs.getString("nome_empregado");
                 e = new Empregado(id, id_emp, nome);
             }
         } catch (SQLException ex) {
