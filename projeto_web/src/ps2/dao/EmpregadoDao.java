@@ -131,8 +131,9 @@ public class EmpregadoDao {
             stmR.setLong(1, id_emp);
             ResultSet rs = stmR.executeQuery();
             while (rs.next()) {
+                long id = rs.getLong("id");
                 String nome = rs.getString("nome");
-                Empregado t = new Empregado(nome);
+                Empregado t = new Empregado(id, nome);
                 empregados.add(t);
             }
             rs.close();

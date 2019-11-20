@@ -47,18 +47,18 @@ public class EmpresaResource {
         return empresas;
     }
 
-    @GET
-    @Path("{id}")
-    public List<Empregado> readEmpregado(@PathParam("id") long id_emp) {
-        List<Empregado> empregados;
-        try {
-            empregados = dao.readEmpregados(id_emp);
-        } catch (DaoException ex) {
-            ex.printStackTrace();
-            empregados = null;
-        }
-        return empregados;
-    }
+//    @GET
+//    @Path("{id}")
+//    public List<Empregado> readEmpregado(@PathParam("id") long id_emp) {
+//        List<Empregado> empregados;
+//        try {
+//            empregados = dao.readEmpregados(id_emp);
+//        } catch (DaoException ex) {
+//            ex.printStackTrace();
+//            empregados = null;
+//        }
+//        return empregados;
+//    }
 
     @PUT
     @Path("{id_emp}")

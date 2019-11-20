@@ -9,7 +9,8 @@ public class Empregado {
     public Empregado() {
     }
 
-    public Empregado(String nome) {
+    public Empregado(long id, String nome) {
+        this.id = id;
         this.nome = nome;
     }
 
