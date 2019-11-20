@@ -37,7 +37,8 @@ public class BairroDao {
     public long create(Bairro b) throws DaoException {
         long id_bairro = 0;
         try {
-            stmC.setString(1, b.getNome());
+            stmC.setLong(1,b.getid_cid());
+            stmC.setString(2, b.getNome());
             int r = stmC.executeUpdate();
             ResultSet rs = stmC.getGeneratedKeys();
             if (rs.next()) {
@@ -75,7 +76,7 @@ public class BairroDao {
             stmU.setString(1, b.getNome());
             stmU.setLong(2, b.getid_cid());
             stmU.setLong(3, b.getId());
-            int r = stmU.executeUpdate();
+            long r = stmU.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DaoException("Falha ao atualizar registro: " + ex.getMessage());
